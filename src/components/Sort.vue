@@ -13,6 +13,12 @@
         </template>
       </v-slider>
     </v-card-text>
+    <v-stage :config="configKonva">
+      <v-layer>
+        <v-line :config="configLine"></v-line>
+        <v-line :config="configLine2"></v-line>
+      </v-layer>
+    </v-stage>
   </v-container>
 </template>
 
@@ -23,7 +29,25 @@ export default {
   data: () => ({
     min: 3,
     max: 200,
-    arraySize: 100
+    arraySize: 30,
+    configKonva: {
+      width: 500,
+      height: 500
+    },    
+    configLine: {
+      points: [5, 70, 140, 23, 250, 60, 300, 20], //[x1, y1, x2, y2, ....]
+        stroke: 'green',
+        strokeWidth: 10,
+        lineCap: 'round',
+        lineJoin: 'round',
+    },
+    configLine2: {
+      points: [5, 10, 30, 10], //[x1, y1, x2, y2]
+        stroke: 'blue',
+        strokeWidth: 10,
+        lineCap: 'round',
+        lineJoin: 'round',
+    }
   }),
 
   computed: {
