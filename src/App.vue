@@ -3,7 +3,7 @@
     <v-navigation-drawer clipped permanent app>
       <v-toolbar>
         <v-icon>mdi-sort-variant</v-icon>
-        <span class="title font-weight-light">Vue Sort</span>
+        <span class="title font-weight-light primary--text">Vue Sort</span>
       </v-toolbar>
 
       <v-list nav dense>

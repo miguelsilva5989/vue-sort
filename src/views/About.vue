@@ -1,5 +1,5 @@
 <template>
   <div class="about">
-    <h1>This mini project allows the visualization of sorting algorithms.</h1>
+    <h2 class="font-weight-light ma-4">This mini project allows the visualization of sorting algorithms.</h2>
   </div>
 </template>
