@@ -1,19 +1,27 @@
 <template>
   <v-app>
-    <v-app-bar app color="primary">
-      <div class="d-flex align-center">
+    <v-navigation-drawer clipped permanent app>
+      <v-toolbar>
         <v-icon>mdi-sort-variant</v-icon>
-
         <span class="title font-weight-light">Vue Sort</span>
-      </div>
+      </v-toolbar>
 
-      <v-spacer></v-spacer>
+      <v-list nav dense>
+        <v-list-item to="/" link>Home</v-list-item>
+        <v-list-item to="/About" link>About</v-list-item>
+      </v-list>
 
-      <nav>
-        <router-link to="/">Home |</router-link>
-        <router-link to="/About">About</router-link>
-      </nav>
-    </v-app-bar>
+      <v-divider></v-divider>
+
+      <v-list nav dense>
+        <v-list-item link>
+          <v-list-item-icon>
+            <v-icon>mdi-chart-bubble</v-icon>
+          </v-list-item-icon>
+          <v-list-item-title>Bubble Sort</v-list-item-title>
+        </v-list-item>
+      </v-list>
+    </v-navigation-drawer>
 
     <v-content>
       <router-view></router-view>
@@ -22,14 +30,10 @@
 </template>
 
 <script>
-// import HelloWorld from './components/HelloWorld';
-
 export default {
   name: "App",
 
-  components: {
-    // HelloWorld,
-  },
+  components: {},
 
   data: () => ({
     //
