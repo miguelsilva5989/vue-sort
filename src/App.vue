@@ -1,28 +1,38 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+  <v-app>
+    <v-app-bar app color="primary">
+      <div class="d-flex align-center">
+        <v-icon>mdi-sort-variant</v-icon>
+
+        <span class="title font-weight-light">Vue Sort</span>
+      </div>
+
+      <v-spacer></v-spacer>
+
+      <nav>
+        <router-link to="/">Home |</router-link>
+        <router-link to="/About">About</router-link>
+      </nav>
+    </v-app-bar>
+
+    <v-content>
+      <router-view></router-view>
+    </v-content>
+  </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+// import HelloWorld from './components/HelloWorld';
 
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
-</script>
+  name: "App",
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
+  components: {
+    // HelloWorld,
+  },
+
+  data: () => ({
+    //
+  })
+};
+</script>
