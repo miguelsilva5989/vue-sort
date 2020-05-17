@@ -69,7 +69,7 @@ export default {
     array: [],
     swaps: 0,
     sorting: false,
-    sorted: false,
+    sorted: false
     // configLine: {
     //   points: [5, 70, 140, 23, 250, 60, 300, 20], //[x1, y1, x2, y2, ....]
     //   stroke: "green",
@@ -144,8 +144,8 @@ export default {
 
       this.swaps = 0; //reset steps number
       let inputArr = this.array.map(x => x.x); //convert x in objects to an array
-      // let maxSortedValues = inputArr; //checks if values are already sorted and will not be moved again
-      let maxSortedValues = [];
+      let maxSortedValues = inputArr.slice(); //checks if values are already sorted and will not be moved again
+      // let maxSortedValues = [];
 
       let len = inputArr.length;
       let swapped;
@@ -153,16 +153,16 @@ export default {
       do {
         swapped = false;
         for (let i = 0; i < len; i++) {
-          await this.timer(10);
-
           // change to green the values which are being analysed
           if (i + 1 < len && !maxSortedValues.includes(this.array[i + 1])) {
-            this.changeColor(i, "cyan")
+            this.changeColor(i, "cyan");
+            await this.timer(100);
           }
 
-          if (inputArr[i] > inputArr[i + 1]) {
           let tmp = inputArr[i];
-            this.changeColor(i, "red") //change to red if order is wrong
+          if (inputArr[i] > inputArr[i + 1]) {
+            this.changeColor(i, "red"); //change to red if order is wrong
+            await this.timer(100);
 
             inputArr[i] = inputArr[i + 1];
             this.array[i].x = inputArr[i + 1];
@@ -172,18 +172,20 @@ export default {
 
             this.swaps++;
             swapped = true;
+          }
 
-            await this.timer(30);
+          //change to green after swapping
+          if (i + 1 < len && !maxSortedValues.includes(this.array[i + 1])) {
+            await this.timer(20);
+            this.changeColor(i, "blue");
+          }
 
-            //change to green after swapping
+          //if value will not be sorted again change to green
+          if (Math.max(...maxSortedValues) === tmp) {
+            await this.timer(100);
+            maxSortedValues.pop(tmp);
             if (i + 1 < len) {
-              this.changeColor(i, "blue");
-            }
-
-            //if value will not be sorted again change to green
-            if (Math.max(...inputArr) === tmp) {
-              maxSortedValues.push(tmp);
-              this.array[i + 1].stroke = "green";
+              this.array[i+1].stroke = "green";
             }
           }
         }
@@ -204,5 +206,7 @@ export default {
 </script>
 
 <style>
-  html { overflow-y: auto }
+html {
+  overflow-y: auto;
+}
 </style>
