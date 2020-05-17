@@ -4,7 +4,7 @@
     <v-card-text>
       <span class="subheading font-weight-light mr-1">Array Size</span>
       <span class="display-2 font-weight-light" v-text="arraySize"></span>
-      <v-slider v-model="arraySize" :color="color" :max="max" :min="min" thumb-label>
+      <v-slider v-model="arraySize" :color="color" :min="sliderMin" :max="sliderMax" thumb-label>
         <template v-slot:prepend>
           <v-icon :color="color" @click="decrement">mdi-minus</v-icon>
         </template>
@@ -13,7 +13,6 @@
         </template>
       </v-slider>
     </v-card-text>
-    <span>{{ array }}</span>
     <v-stage :config="configKonva">
       <v-layer>
         <v-line
@@ -22,7 +21,7 @@
           :config="{
             points: [5, item.y, item.x, item.y],
             stroke: 'blue',
-            strokeWidth: 5,
+            strokeWidth: strokeWidth,
             lineCap: 'round',
             lineJoin: 'round',
           }"
@@ -31,20 +30,24 @@
         <!-- <v-line :config="configLine2"></v-line> -->
       </v-layer>
     </v-stage>
+    <!-- <span>{{ array }}</span> -->
   </v-container>
 </template>
 
 <script>
+var stageHeight = window.innerHeight - 225; //remove top pixels;
+
 export default {
   name: "Sort",
 
   data: () => ({
-    min: 3,
-    max: 200,
+    sliderMin: 3,
+    sliderMax: 200,
     arraySize: 30,
+    strokeWidth: 5,
     configKonva: {
       width: 500,
-      height: 500
+      height: stageHeight
     },
     array: [],
     // configLine: {
@@ -69,9 +72,9 @@ export default {
 
   computed: {
     color() {
-      if (this.arraySize < this.max * 0.25) return "blue";
-      if (this.arraySize < this.max * 0.5) return "green";
-      if (this.arraySize < this.max * 0.75) return "orange";
+      if (this.arraySize < this.sliderMax * 0.25) return "blue";
+      if (this.arraySize < this.sliderMax * 0.5) return "green";
+      if (this.arraySize < this.sliderMax * 0.75) return "orange";
       return "red";
     }
   },
@@ -79,7 +82,16 @@ export default {
   methods: {
     generateArray() {
       var array = [];
-      var y = 1;
+      var y = 1; //first position
+      // var windowHeight = window.innerHeight - 150; //remove top pixels
+
+      var yIncrement = (1 / Math.pow(stageHeight, this.arraySize)) + 10; // distance between points
+      console.log("yIncrement " + yIncrement);
+
+      //resize height of lines
+      this.strokeWidth = (this.arraySize / stageHeight) + (this.arraySize / 15);
+      console.log(this.strokeWidth)
+
       while (array.length < this.arraySize) {
         var rand = Math.floor(Math.random() * 500) + 10; //500 is the canvas size
         // +10 as 10 is the minimum for the line in chart to become visisble
@@ -88,12 +100,13 @@ export default {
           x: rand
         };
         if (array.findIndex(val => val.x === rand) === -1) {
-          y += 10; // distance between points
+          y += yIncrement; // distance between points
           obj.y = y;
           array.push(obj);
         }
       }
       this.array = array;
+
     },
     decrement() {
       this.arraySize -= 10;
