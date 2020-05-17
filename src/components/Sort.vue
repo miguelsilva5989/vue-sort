@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-btn class="mr-4" outlined color="primary">Generate New Array</v-btn>
+    <v-btn class="mr-4" outlined color="primary" @click="generateArray">Generate New Array</v-btn>
     <v-card-text>
       <span class="subheading font-weight-light mr-1">Array Size</span>
       <span class="display-2 font-weight-light" v-text="arraySize"></span>
@@ -13,10 +13,22 @@
         </template>
       </v-slider>
     </v-card-text>
+    <span>{{ array }}</span>
     <v-stage :config="configKonva">
       <v-layer>
-        <v-line :config="configLine"></v-line>
-        <v-line :config="configLine2"></v-line>
+        <v-line
+          v-for="item in array"
+          :key="item.id"
+          :config="{
+            points: [5, item.y, item.x, item.y],
+            stroke: 'blue',
+            strokeWidth: 5,
+            lineCap: 'round',
+            lineJoin: 'round',
+          }"
+        ></v-line>
+        <!-- <v-line :config="configLine"></v-line> -->
+        <!-- <v-line :config="configLine2"></v-line> -->
       </v-layer>
     </v-stage>
   </v-container>
@@ -33,22 +45,27 @@ export default {
     configKonva: {
       width: 500,
       height: 500
-    },    
-    configLine: {
-      points: [5, 70, 140, 23, 250, 60, 300, 20], //[x1, y1, x2, y2, ....]
-        stroke: 'green',
-        strokeWidth: 10,
-        lineCap: 'round',
-        lineJoin: 'round',
     },
-    configLine2: {
-      points: [5, 10, 30, 10], //[x1, y1, x2, y2]
-        stroke: 'blue',
-        strokeWidth: 10,
-        lineCap: 'round',
-        lineJoin: 'round',
-    }
+    array: [],
+    // configLine: {
+    //   points: [5, 70, 140, 23, 250, 60, 300, 20], //[x1, y1, x2, y2, ....]
+    //   stroke: "green",
+    //   strokeWidth: 10,
+    //   lineCap: "round",
+    //   lineJoin: "round"
+    // },
+    // configLine2: {
+    //   points: [5, 10, 30, 10], //[x1, y1, x2, y2]
+    //   stroke: "blue",
+    //   strokeWidth: 5,
+    //   lineCap: "round",
+    //   lineJoin: "round"
+    // }
   }),
+
+  mounted() {
+    this.generateArray();
+  },
 
   computed: {
     color() {
@@ -60,6 +77,24 @@ export default {
   },
 
   methods: {
+    generateArray() {
+      var array = [];
+      var y = 1;
+      while (array.length < this.arraySize) {
+        var rand = Math.floor(Math.random() * 500) + 10; //500 is the canvas size
+        // +10 as 10 is the minimum for the line in chart to become visisble
+        var obj = {
+          id: (rand).toString(),
+          x: rand
+        };
+        if (array.findIndex(val => val.x === rand) === -1) {
+          y += 10; // distance between points
+          obj.y = y;
+          array.push(obj);
+        }
+      }
+      this.array = array;
+    },
     decrement() {
       this.arraySize -= 10;
     },

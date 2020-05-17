@@ -22,3 +22,6 @@ yarn lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+
+https://konvajs.org/docs/shapes/Line_-_Simple_Line.html
