@@ -82,7 +82,7 @@
 
 <script>
 // var stageHeight = window.innerHeight - 225; //remove top pixels;
-var stageWidth = window.innerWidth - 255; //minus left panel
+var stageWidth = (3/4 * window.innerWidth) - 50; //minus left panel
 var maxHeight = 450;
 
 export default {
