@@ -32,22 +32,24 @@
         @click="generateArray"
       >Generate New Array</v-btn>
       <v-btn
-        :disabled="sorting||sorted"
+        :hidden="sorting||sorted||!paused"
         small
         class="mr-4"
         outlined
         color="green"
         @click="bubbleSort"
       >Sort</v-btn>
-      <span class="subheading font-weight-light ml-2 mr-1">Steps: {{ steps }}</span>
-      <span class="subheading font-weight-light mx-4">Swaps: {{ swaps }}</span>
       <v-btn
-        :disabled="!sorting"
+        :hidden="!sorting"
         small
         class="mr-4"
         outlined
         color="red"
+        @click="forceStop = !forceStop"
       >Stop</v-btn>
+
+      <span class="subheading font-weight-light ml-2 mr-1">Steps: {{ steps }}</span>
+      <span class="subheading font-weight-light mx-4">Swaps: {{ swaps }}</span>
     </v-card-text>
     <v-stage :config="configKonva">
       <v-layer>
@@ -94,6 +96,8 @@ export default {
     steps: 0,
     sorting: false,
     sorted: false,
+    forceStop: false,
+    paused: true,
     // configLine: {
     //   points: [50, 1, 50, 100], //[x1, y1, x2, y2, ....]
     //   stroke: "green",
@@ -126,6 +130,9 @@ export default {
   methods: {
     generateArray() {
       this.sorted = false;
+      // reset counters
+      this.swaps = 0;
+      this.steps = 0;
 
       var array = [];
       var x = 5; //first position
@@ -164,7 +171,14 @@ export default {
       this.sorting = true;
       this.sorted = false;
 
-      this.swaps = 0; //reset steps number
+      if (this.paused) {
+        this.paused = false;
+        this.forceStop = false;
+      } else {
+        this.swaps = 0; //reset swaps number
+        this.steps = 0; //reset steps number
+      }
+
       let inputArr = this.array.map(z => z.y); //convert x in objects to an array
       let maxSortedValues = inputArr.slice(); //checks if values are already sorted and will not be moved again
 
@@ -174,6 +188,8 @@ export default {
       do {
         swapped = false;
         for (let i = 0; i < len; i++) {
+          if (this.forceStop) { break; } //if force stop break
+
           this.steps++;
 
           // change to green the values which are being analysed
@@ -218,9 +234,15 @@ export default {
         }
       } while (swapped);
 
-      //tmp
-      this.sorting = false;
-      this.sorted = true;
+      if (this.forceStop) {
+        this.forceStop = false;
+        this.sorting = false;
+        this.paused = true;
+      } else {
+        this.sorting = false;
+        this.sorted = true;
+        this.paused = false;
+      }
     },
     decrementSize() {
       this.arraySize -= 10;
