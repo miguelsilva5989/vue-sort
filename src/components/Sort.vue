@@ -12,15 +12,22 @@
         </template>
       </v-slider>
 
-      <span class="subheading font-weight-light mr-1">Sort Speed</span>
-      <span class="display-1 font-weight-light" v-text="sortSpeed"></span>
-      <v-slider v-model="sortSpeed" :disabled="sorting" min=1 max=500 thumb-label>
-        <template v-slot:prepend>
+      <span class="headline font-weight-light mr-1">Sort Speed</span>
+      <!-- <span class="display-1 font-weight-light" v-text="speedLabels[sortSpeed]"></span> -->
+      <v-slider 
+        v-model="sortSpeed"
+        :tick-labels="speedLabels"
+        :disabled="sorting"
+        ticks="always"
+        tick-size="4"
+        step="1"
+        :max="4">
+        <!-- <template v-slot:prepend>
           <v-icon @click="decrementSpeed">mdi-minus</v-icon>
         </template>
         <template v-slot:append>
           <v-icon @click="incrementSpeed">mdi-plus</v-icon>
-        </template>
+        </template> -->
       </v-slider>
 
       <v-btn
@@ -85,7 +92,14 @@ export default {
     sliderMin: 3,
     sliderMax: 200,
     arraySize: 30,
-    sortSpeed: 20,
+    sortSpeed: 0,
+    speedLabels: [
+      'Snail',
+      'Turtle',
+      'Rabbit',
+      'Cheetah',
+      'Golden Eagle'
+    ],
     strokeWidth: 5,
     configKonva: {
       width: stageWidth,
@@ -168,6 +182,8 @@ export default {
       this.array[index].stroke = color;
     },
     async bubbleSort() {
+      var sortSpeed = Math.pow(5, this.sortSpeed+1); //+1 as it starts on 0
+
       this.sorting = true;
 
       if (this.paused) {
@@ -195,7 +211,7 @@ export default {
           if (i + 1 < len && !maxSortedValues.includes(this.array[i + 1])) {
             this.changeColor(i, "cyan");
             this.changeColor(i + 1, "cyan");
-            await this.timer(100 / this.sortSpeed);
+            await this.timer(100 / sortSpeed);
           }
 
           let tmp = inputArr[i];
@@ -204,7 +220,7 @@ export default {
 
             this.changeColor(i, "red"); //change to red if order is wrong
             this.changeColor(i + 1, "red"); //change to red if order is wrong
-            await this.timer(100 / this.sortSpeed);
+            await this.timer(100 / sortSpeed);
 
             inputArr[i] = inputArr[i + 1];
             this.array[i].y = inputArr[i + 1];
@@ -217,14 +233,14 @@ export default {
 
           //change to green after swapping
           if (i + 1 < len && !maxSortedValues.includes(this.array[i + 1])) {
-            await this.timer(20 / this.sortSpeed);
+            await this.timer(20 / sortSpeed);
             this.changeColor(i, "blue");
             this.changeColor(i + 1, "blue");
           }
 
           //if value will not be sorted again change to green
           if (Math.max(...maxSortedValues) === tmp) {
-            await this.timer(100 / this.sortSpeed);
+            await this.timer(100 / sortSpeed);
             maxSortedValues.pop(tmp);
             if (i + 1 < len) {
               this.array[i+1].stroke = "green";
