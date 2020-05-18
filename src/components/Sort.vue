@@ -32,7 +32,7 @@
         @click="generateArray"
       >Generate New Array</v-btn>
       <v-btn
-        :hidden="sorting||sorted||!paused"
+        :hidden="sorting||!paused"
         small
         class="mr-4"
         outlined
@@ -169,7 +169,6 @@ export default {
     },
     async bubbleSort() {
       this.sorting = true;
-      this.sorted = false;
 
       if (this.paused) {
         this.paused = false;
@@ -239,9 +238,10 @@ export default {
         this.sorting = false;
         this.paused = true;
       } else {
+        this.forceStop = false;
         this.sorting = false;
+        this.paused = true;
         this.sorted = true;
-        this.paused = false;
       }
     },
     decrementSize() {
