@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-card-text>
-      <span class="subheading font-weight-light mr-1">Array Size</span>
+      <span class="subheading font-weight-light mr-1">Array Size -></span>
       <span class="display-2 font-weight-light" v-text="arraySize"></span>
       <v-slider v-model="arraySize" :disabled="sorting" :color="color" :min="sliderMin" :max="sliderMax" thumb-label @input="generateArray">
         <template v-slot:prepend>
@@ -12,8 +12,8 @@
         </template>
       </v-slider>
 
-      <span class="headline font-weight-light mr-1">Sort Speed</span>
-      <!-- <span class="display-1 font-weight-light" v-text="speedLabels[sortSpeed]"></span> -->
+      <span class="subheading font-weight-light mr-1">Sort Speed -></span>
+      <span class="display-1 font-weight-light" v-text="speedLabels[sortSpeed]"></span>
       <v-slider 
         v-model="sortSpeed"
         :tick-labels="speedLabels"
@@ -22,12 +22,12 @@
         tick-size="4"
         step="1"
         :max="4">
-        <!-- <template v-slot:prepend>
+        <template v-slot:prepend>
           <v-icon @click="decrementSpeed">mdi-minus</v-icon>
         </template>
         <template v-slot:append>
           <v-icon @click="incrementSpeed">mdi-plus</v-icon>
-        </template> -->
+        </template>
       </v-slider>
 
       <v-btn
@@ -267,10 +267,10 @@ export default {
       this.arraySize += 10;
     },
     decrementSpeed() {
-      this.sortSpeed -= 5;
+      this.sortSpeed -= 1;
     },
     incrementSpeed() {
-      this.sortSpeed += 5;
+      this.sortSpeed += 1;
     }
   }
 };
