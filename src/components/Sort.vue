@@ -3,14 +3,26 @@
     <v-card-text>
       <span class="subheading font-weight-light mr-1">Array Size</span>
       <span class="display-2 font-weight-light" v-text="arraySize"></span>
-      <v-slider v-model="arraySize" :color="color" :min="sliderMin" :max="sliderMax" thumb-label>
+      <v-slider v-model="arraySize" :color="color" :min="sliderMin" :max="sliderMax" thumb-label @input="generateArray">
         <template v-slot:prepend>
-          <v-icon :color="color" @click="decrement">mdi-minus</v-icon>
+          <v-icon :color="color" @click="decrementSize();generateArray();">mdi-minus</v-icon>
         </template>
         <template v-slot:append>
-          <v-icon :color="color" @click="increment">mdi-plus</v-icon>
+          <v-icon :color="color" @click="incrementSize();generateArray();">mdi-plus</v-icon>
         </template>
       </v-slider>
+
+      <span class="subheading font-weight-light mr-1">Sort Speed</span>
+      <span class="display-1 font-weight-light" v-text="sortSpeed"></span>
+      <v-slider v-model="sortSpeed" min=1 max=100 thumb-label>
+        <template v-slot:prepend>
+          <v-icon @click="decrementSpeed">mdi-minus</v-icon>
+        </template>
+        <template v-slot:append>
+          <v-icon @click="incrementSpeed">mdi-plus</v-icon>
+        </template>
+      </v-slider>
+
       <v-btn
         :disabled="sorting"
         small
@@ -27,7 +39,8 @@
         color="green"
         @click="bubbleSort"
       >Sort</v-btn>
-      <span class="subheading font-weight-light mr-1">Number of swaps: {{ swaps }}</span>
+      <span class="subheading font-weight-light ml-2 mr-1">Steps: {{ steps }}</span>
+      <span class="subheading font-weight-light mx-4">Swaps: {{ swaps }}</span>
     </v-card-text>
     <v-stage :config="configKonva">
       <v-layer>
@@ -61,6 +74,7 @@ export default {
     sliderMin: 3,
     sliderMax: 200,
     arraySize: 30,
+    sortSpeed: 20,
     strokeWidth: 5,
     configKonva: {
       width: 500,
@@ -68,6 +82,7 @@ export default {
     },
     array: [],
     swaps: 0,
+    steps: 0,
     sorting: false,
     sorted: false
     // configLine: {
@@ -145,7 +160,6 @@ export default {
       this.swaps = 0; //reset steps number
       let inputArr = this.array.map(x => x.x); //convert x in objects to an array
       let maxSortedValues = inputArr.slice(); //checks if values are already sorted and will not be moved again
-      // let maxSortedValues = [];
 
       let len = inputArr.length;
       let swapped;
@@ -153,16 +167,20 @@ export default {
       do {
         swapped = false;
         for (let i = 0; i < len; i++) {
+          this.steps++;
+
           // change to green the values which are being analysed
           if (i + 1 < len && !maxSortedValues.includes(this.array[i + 1])) {
             this.changeColor(i, "cyan");
-            await this.timer(100);
+            await this.timer(100 / this.sortSpeed);
           }
 
           let tmp = inputArr[i];
           if (inputArr[i] > inputArr[i + 1]) {
+            this.swaps++;
+
             this.changeColor(i, "red"); //change to red if order is wrong
-            await this.timer(100);
+            await this.timer(100 / this.sortSpeed);
 
             inputArr[i] = inputArr[i + 1];
             this.array[i].x = inputArr[i + 1];
@@ -170,19 +188,18 @@ export default {
             inputArr[i + 1] = tmp;
             this.array[i + 1].x = tmp;
 
-            this.swaps++;
             swapped = true;
           }
 
           //change to green after swapping
           if (i + 1 < len && !maxSortedValues.includes(this.array[i + 1])) {
-            await this.timer(20);
+            await this.timer(20 / this.sortSpeed);
             this.changeColor(i, "blue");
           }
 
           //if value will not be sorted again change to green
           if (Math.max(...maxSortedValues) === tmp) {
-            await this.timer(100);
+            await this.timer(100 / this.sortSpeed);
             maxSortedValues.pop(tmp);
             if (i + 1 < len) {
               this.array[i+1].stroke = "green";
@@ -195,11 +212,17 @@ export default {
       this.sorting = false;
       this.sorted = true;
     },
-    decrement() {
+    decrementSize() {
       this.arraySize -= 10;
     },
-    increment() {
+    incrementSize() {
       this.arraySize += 10;
+    },
+    decrementSpeed() {
+      this.sortSpeed -= 5;
+    },
+    incrementSpeed() {
+      this.sortSpeed += 5;
     }
   }
 };
