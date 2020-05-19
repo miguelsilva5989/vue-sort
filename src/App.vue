@@ -31,19 +31,19 @@
           </v-list-item>
           <v-list-item>
             <v-list-item-icon>
-              <v-icon>mdi-chart-bubble</v-icon>
+              <v-icon>mdi-clock-fast</v-icon>
             </v-list-item-icon>
             <v-list-item-content>Quick Sort</v-list-item-content>
           </v-list-item>
           <v-list-item>
             <v-list-item-icon>
-              <v-icon>mdi-chart-bubble</v-icon>
+              <v-icon>mdi-file-tree</v-icon>
             </v-list-item-icon>
             <v-list-item-content>Heap Sort</v-list-item-content>
           </v-list-item>
           <v-list-item>
             <v-list-item-icon>
-              <v-icon>mdi-chart-bubble</v-icon>
+              <v-icon>mdi-transit-connection-variant</v-icon>
             </v-list-item-icon>
             <v-list-item-content>Merge Sort</v-list-item-content>
           </v-list-item>
