@@ -14,12 +14,40 @@
       <v-divider></v-divider>
 
       <v-list nav dense>
-        <v-list-item link>
-          <v-list-item-icon>
-            <v-icon>mdi-chart-bubble</v-icon>
-          </v-list-item-icon>
-          <v-list-item-title>Bubble Sort</v-list-item-title>
+        <v-list-item>
+          <v-list-item-title>Sorting Algorithms</v-list-item-title>
         </v-list-item>
+      </v-list>
+
+      <v-divider></v-divider>
+
+      <v-list flat dense>
+        <v-list-item-group mandatory v-model="selectedAlg" color="primary">
+          <v-list-item>
+            <v-list-item-icon>
+              <v-icon>mdi-chart-bubble</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>Bubble Sort</v-list-item-content>
+          </v-list-item>
+          <v-list-item>
+            <v-list-item-icon>
+              <v-icon>mdi-chart-bubble</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>Quick Sort</v-list-item-content>
+          </v-list-item>
+          <v-list-item>
+            <v-list-item-icon>
+              <v-icon>mdi-chart-bubble</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>Heap Sort</v-list-item-content>
+          </v-list-item>
+          <v-list-item>
+            <v-list-item-icon>
+              <v-icon>mdi-chart-bubble</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>Merge Sort</v-list-item-content>
+          </v-list-item>
+        </v-list-item-group>
       </v-list>
     </v-navigation-drawer>
 
@@ -36,7 +64,7 @@ export default {
   components: {},
 
   data: () => ({
-    //
+    selectedAlg: 0,
   })
 };
 </script>

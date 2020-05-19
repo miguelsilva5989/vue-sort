@@ -3,7 +3,15 @@
     <v-card-text>
       <span class="subheading font-weight-light mr-1">Array Size -></span>
       <span class="display-2 font-weight-light" v-text="arraySize"></span>
-      <v-slider v-model="arraySize" :disabled="sorting" :color="color" :min="sliderMin" :max="sliderMax" thumb-label @input="generateArray">
+      <v-slider
+        v-model="arraySize"
+        :disabled="sorting"
+        :color="color"
+        :min="sliderMin"
+        :max="sliderMax"
+        thumb-label
+        @input="generateArray"
+      >
         <template v-slot:prepend>
           <v-icon :color="color" @click="decrementSize();generateArray();">mdi-minus</v-icon>
         </template>
@@ -14,14 +22,15 @@
 
       <span class="subheading font-weight-light mr-1">Sort Speed -></span>
       <span class="display-1 font-weight-light" v-text="speedLabels[sortSpeed]"></span>
-      <v-slider 
+      <v-slider
         v-model="sortSpeed"
         :tick-labels="speedLabels"
         :disabled="sorting"
         ticks="always"
         tick-size="4"
         step="1"
-        :max="4">
+        :max="4"
+      >
         <template v-slot:prepend>
           <v-icon @click="decrementSpeed">mdi-minus</v-icon>
         </template>
@@ -30,33 +39,34 @@
         </template>
       </v-slider>
 
-      <v-btn
-        :disabled="sorting"
-        small
-        class="mr-4"
-        outlined
-        color="primary"
-        @click="generateArray"
-      >Generate New Array</v-btn>
-      <v-btn
-        :hidden="sorting||!paused"
-        small
-        class="mr-4"
-        outlined
-        color="green"
-        @click="bubbleSort"
-      >Sort</v-btn>
-      <v-btn
-        :hidden="!sorting"
-        small
-        class="mr-4"
-        outlined
-        color="red"
-        @click="forceStop = !forceStop"
-      >Stop</v-btn>
-
-      <span class="subheading font-weight-light ml-2 mr-1">Steps: {{ steps }}</span>
-      <span class="subheading font-weight-light mx-4">Swaps: {{ swaps }}</span>
+      <div class="mt-5">
+        <v-btn
+          :disabled="sorting"
+          small
+          class="mr-4"
+          outlined
+          color="primary"
+          @click="generateArray"
+        >Generate New Array</v-btn>
+        <v-btn
+          :hidden="sorting||!paused"
+          small
+          class="mr-4"
+          outlined
+          color="green"
+          @click="bubbleSort"
+        >Sort</v-btn>
+        <v-btn
+          :hidden="!sorting"
+          small
+          class="mr-4"
+          outlined
+          color="red"
+          @click="forceStop = !forceStop"
+        >Stop</v-btn>
+        <span class="subheading font-weight-light ml-2 mr-1">Steps: {{ steps }}</span>
+        <span class="subheading font-weight-light mx-4">Swaps: {{ swaps }}</span>
+      </div>
     </v-card-text>
     <v-stage :config="configKonva">
       <v-layer>
@@ -82,7 +92,7 @@
 
 <script>
 // var stageHeight = window.innerHeight - 225; //remove top pixels;
-var stageWidth = (3/4 * window.innerWidth) - 50; //minus left panel
+var stageWidth = (3 / 4) * window.innerWidth - 50; //minus left panel
 var maxHeight = 450;
 
 export default {
@@ -92,14 +102,8 @@ export default {
     sliderMin: 3,
     sliderMax: 200,
     arraySize: 30,
-    sortSpeed: 0,
-    speedLabels: [
-      'Snail',
-      'Turtle',
-      'Rabbit',
-      'Cheetah',
-      'Golden Eagle'
-    ],
+    sortSpeed: 2,
+    speedLabels: ["Snail", "Turtle", "Rabbit", "Cheetah", "Golden Eagle"],
     strokeWidth: 5,
     configKonva: {
       width: stageWidth,
@@ -111,7 +115,7 @@ export default {
     sorting: false,
     sorted: false,
     forceStop: false,
-    paused: true,
+    paused: true
     // configLine: {
     //   points: [50, 1, 50, 100], //[x1, y1, x2, y2, ....]
     //   stroke: "green",
@@ -182,7 +186,7 @@ export default {
       this.array[index].stroke = color;
     },
     async bubbleSort() {
-      var sortSpeed = Math.pow(5, this.sortSpeed+1); //+1 as it starts on 0
+      var sortSpeed = Math.pow(5, this.sortSpeed + 1); //+1 as it starts on 0
 
       this.sorting = true;
 
@@ -203,7 +207,9 @@ export default {
       do {
         swapped = false;
         for (let i = 0; i < len; i++) {
-          if (this.forceStop) { break; } //if force stop break
+          if (this.forceStop) { //if Stop button pressed
+            break;
+          }
 
           this.steps++;
 
@@ -243,7 +249,7 @@ export default {
             await this.timer(100 / sortSpeed);
             maxSortedValues.pop(tmp);
             if (i + 1 < len) {
-              this.array[i+1].stroke = "green";
+              this.array[i + 1].stroke = "green";
             }
           }
         }
