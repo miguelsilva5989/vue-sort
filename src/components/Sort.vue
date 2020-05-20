@@ -104,6 +104,7 @@ export default {
     arraySize: 30,
     sortSpeed: 2,
     speedLabels: ["Snail", "Turtle", "Rabbit", "Cheetah", "Golden Eagle"],
+    speedValues: [200, 100, 50, 25, 1],
     strokeWidth: 5,
     configKonva: {
       width: stageWidth,
@@ -186,7 +187,8 @@ export default {
       this.array[index].stroke = color;
     },
     async bubbleSort() {
-      var sortSpeed = Math.pow(5, this.sortSpeed + 1); //+1 as it starts on 0
+      var sortSpeed = this.speedValues[this.sortSpeed]
+      console.log(sortSpeed)
 
       this.sorting = true;
 
@@ -217,7 +219,8 @@ export default {
           if (i + 1 < len && !maxSortedValues.includes(this.array[i + 1])) {
             this.changeColor(i, "cyan");
             this.changeColor(i + 1, "cyan");
-            await this.timer(100 / sortSpeed);
+            await this.timer(sortSpeed);
+            
           }
 
           let tmp = inputArr[i];
@@ -226,7 +229,7 @@ export default {
 
             this.changeColor(i, "red"); //change to red if order is wrong
             this.changeColor(i + 1, "red"); //change to red if order is wrong
-            await this.timer(100 / sortSpeed);
+            await this.timer(sortSpeed);
 
             inputArr[i] = inputArr[i + 1];
             this.array[i].y = inputArr[i + 1];
@@ -239,14 +242,14 @@ export default {
 
           //change to green after swapping
           if (i + 1 < len && !maxSortedValues.includes(this.array[i + 1])) {
-            await this.timer(20 / sortSpeed);
+            await this.timer(sortSpeed);
             this.changeColor(i, "blue");
             this.changeColor(i + 1, "blue");
           }
 
           //if value will not be sorted again change to green
           if (Math.max(...maxSortedValues) === tmp) {
-            await this.timer(100 / sortSpeed);
+            await this.timer(sortSpeed);
             maxSortedValues.pop(tmp);
             if (i + 1 < len) {
               this.array[i + 1].stroke = "green";
