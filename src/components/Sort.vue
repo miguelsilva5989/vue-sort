@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-card-text>
-      <span class="subheading font-weight-light mr-1">Array Size -></span>
+      <span class="subheading font-weight-light mr-3">Array Size</span>
       <span class="display-2 font-weight-light" v-text="arraySize"></span>
       <v-slider
         v-model="arraySize"
@@ -20,7 +20,7 @@
         </template>
       </v-slider>
 
-      <span class="subheading font-weight-light mr-1">Sort Speed -></span>
+      <span class="subheading font-weight-light mr-3">Sort Speed</span>
       <span class="display-1 font-weight-light" v-text="speedLabels[sortSpeed]"></span>
       <v-slider
         v-model="sortSpeed"
@@ -50,6 +50,7 @@
         >Generate New Array</v-btn>
         <v-btn
           :hidden="sorting||!paused"
+          :disabled="sorted"
           small
           class="mr-4"
           outlined
@@ -284,9 +285,3 @@ export default {
   }
 };
 </script>
-
-<style>
-html {
-  overflow-y: auto;
-}
-</style>
