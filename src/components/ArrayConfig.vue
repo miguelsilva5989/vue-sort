@@ -47,7 +47,7 @@
         color="primary"
         @click="generateArray"
       >Generate New Array</v-btn>
-      <v-btn
+      <!-- <v-btn
         :hidden="sorting||!paused"
         :disabled="sorted"
         small
@@ -55,7 +55,7 @@
         outlined
         color="green"
         @click="bubbleSort"
-      >Sort</v-btn>
+      >Sort</v-btn> -->
       <v-btn
         :hidden="!sorting"
         small
@@ -71,6 +71,8 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from "vuex";
+
 export default {
   name: "ArrayConfig",
 
@@ -90,6 +92,7 @@ export default {
   }),
 
   computed: {
+    ...mapGetters(["getStageHeight"]),
     color() {
       if (this.arraySize < this.sliderMax * 0.25) return "blue";
       if (this.arraySize < this.sliderMax * 0.5) return "green";
@@ -97,20 +100,11 @@ export default {
       return "red";
     }
   },
-
+  created() {
+  },
+  
   methods: {
-    decrementSize() {
-      this.arraySize -= 10;
-    },
-    incrementSize() {
-      this.arraySize += 10;
-    },
-    decrementSpeed() {
-      this.sortSpeed -= 1;
-    },
-    incrementSpeed() {
-      this.sortSpeed += 1;
-    },
+    ...mapActions(["setArray"]),
     generateArray() {
       this.sorted = false;
       // reset counters
@@ -127,9 +121,15 @@ export default {
       // this.strokeWidth = stageWidth / Math.pow(10, this.arraySize) + 5;
       // console.log("strokeWidth " + this.strokeWidth);
 
+      console.log(array.length)
+      console.log(this.arraySize)
+
       while (array.length < this.arraySize) {
-        // var rand = Math.floor(Math.random() * maxHeight) + 10; //maxHeight is the canvas width size
-        var rand = Math.floor(Math.random()) + 10; //maxHeight is the canvas width size
+        console.log(array.length)
+        console.log(array)
+        var rand = Math.floor(Math.random() * this.getStageHeight) + 10; // random number between 10 and maxHeight
+        // var rand = Math.floor(Math.random()) + 10; //maxHeight is the canvas width size
+        console.log(rand)
         // +10 as 10 is the minimum for the line in chart to become visisble
         var obj = {
           id: rand,
@@ -137,13 +137,26 @@ export default {
           stroke: "blue"
         };
         if (array.findIndex(val => val.y === rand) === -1) {
+          console.log('aqui')
           // x += xIncrement; // distance between points
           x += 10; // distance between points
           obj.x = x;
           array.push(obj);
         }
       }
-      this.arrayToSort = array;
+      // this.arrayToSort = array;
+    },
+    decrementSize() {
+      this.arraySize -= 10;
+    },
+    incrementSize() {
+      this.arraySize += 10;
+    },
+    decrementSpeed() {
+      this.sortSpeed -= 1;
+    },
+    incrementSpeed() {
+      this.sortSpeed += 1;
     }
   }
 

@@ -3,11 +3,16 @@ import Vuex from 'vuex';
 
 Vue.use(Vuex);
 
-export default new Vuex.Store({
+export default {
   state: {
     arrayToSort: [],
   },
-  getters: {},
+  getters: {
+    getArrayToSort: (state) => {
+      console.log('getting array');
+      return state.arrayToSort;
+    },
+  },
   mutations: {
     setArray: (state, arrayToSort) => (state.arrayToSort = arrayToSort),
   },
@@ -16,4 +21,4 @@ export default new Vuex.Store({
       commit('setArray', arrayToSort);
     },
   },
-});
+};
