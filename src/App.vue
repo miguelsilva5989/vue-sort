@@ -22,26 +22,26 @@
       <v-divider></v-divider>
 
       <v-list flat dense>
-        <v-list-item-group mandatory v-model="selectedAlg" color="primary">
-          <v-list-item>
+        <v-list-item-group mandatory color="primary">
+          <v-list-item @click="handleClick(0)">
             <v-list-item-icon>
               <v-icon>mdi-chart-bubble</v-icon>
             </v-list-item-icon>
             <v-list-item-content>Bubble Sort</v-list-item-content>
           </v-list-item>
-          <v-list-item>
+          <v-list-item @click="handleClick(1)">
             <v-list-item-icon>
               <v-icon>mdi-clock-fast</v-icon>
             </v-list-item-icon>
             <v-list-item-content>Quick Sort</v-list-item-content>
           </v-list-item>
-          <v-list-item>
+          <v-list-item @click="handleClick(2)">
             <v-list-item-icon>
               <v-icon>mdi-file-tree</v-icon>
             </v-list-item-icon>
             <v-list-item-content>Heap Sort</v-list-item-content>
           </v-list-item>
-          <v-list-item>
+          <v-list-item @click="handleClick(3)">
             <v-list-item-icon>
               <v-icon>mdi-transit-connection-variant</v-icon>
             </v-list-item-icon>
@@ -58,13 +58,26 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from "vuex";
+
 export default {
   name: "App",
 
   components: {},
 
+  computed: {
+    ...mapGetters(["getSelectedAlgorithm"]),
+  },
+
+  methods: { 
+    ...mapActions(["setAlgorithm"]),
+    handleClick(algo) {
+      this.setAlgorithm(algo)
+    },
+  },
+
   data: () => ({
-    selectedAlg: 0,
+    
   }),
 };
 </script>

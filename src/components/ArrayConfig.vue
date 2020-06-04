@@ -66,18 +66,13 @@
       >Stop</v-btn>
       <span class="subheading font-weight-light ml-2 mr-1">Steps: {{ steps }}</span>
       <span class="subheading font-weight-light mx-4">Swaps: {{ swaps }}</span>
-      <span class="subheading font-weight-light ml-5">Selected Sorting Algorithm: {{ algorithms[selectedAlg] }}</span>
+      <span class="subheading font-weight-light ml-5">Selected Sorting Algorithm: {{ getSelectedAlgorithm }}</span>
     </div>
   </v-card-text>
 </template>
 
 <script>
 import { mapActions, mapGetters } from "vuex";
-import bubbleSort from "../src/bubbleSort.js";
-
-var fnMap = {
-  "Bubble Sort": bubbleSort,
-}
 
 export default {
   name: "ArrayConfig",
@@ -87,14 +82,12 @@ export default {
     sliderMax: 200,
     arraySize: 30,
     sortSpeed: 2,
-    algorithms: ["Bubble Sort", "Quick Sort", "Heap Sort", "Merge Sort"],
-    selectedAlg: 0,
-    speedLabels: ["Snail", "Turtle", "Rabbit", "Cheetah", "Golden Eagle"],
+    speedLabels: ['Snail', 'Turtle', 'Rabbit', 'Cheetah', 'Golden Eagle'],
     speedValues: [200, 100, 50, 25, 1],
   }),
 
   computed: {
-    ...mapGetters(["getStageHeight", "getStageWidth", "getArrayToSort", "getSwaps","getSteps","isSorting","isSorted","isForceStop","isPaused"]),
+    ...mapGetters(["getStageHeight", "getStageWidth", "getSwaps","getSteps","isSorting","isSorted","isForceStop","isPaused", "getSelectedAlgorithm"]),
     color() {
       if (this.arraySize < this.sliderMax * 0.25) return "blue";
       if (this.arraySize < this.sliderMax * 0.5) return "green";
@@ -107,11 +100,12 @@ export default {
   },
   
   methods: {
-    ...mapActions(["setArray", "forceStop"]),
+    ...mapActions(["setArray", "forceStop", "bubbleSort"]),
     handleSortingFunction() {
-      console.log(this.algorithms[this.selectedAlg])
-      console.log(fnMap[this.algorithms[this.selectedAlg]])
-      fnMap[this.algorithms[this.selectedAlg]]
+      var fnMap = {
+        "Bubble Sort": this.bubbleSort,
+      }
+      fnMap[this.getSelectedAlgorithm]()
     },
     generateArray() {
       this.sorted = false;
