@@ -65,12 +65,10 @@ export default {
 
   data: () => ({
     selectedAlg: 0,
-  })
+  }),
 };
 </script>
 
 <style>
-html {
-  overflow-y: hidden;
-}
+
 </style>

@@ -9,7 +9,6 @@ export default {
   },
   getters: {
     getArrayToSort: (state) => {
-      console.log('getting array');
       return state.arrayToSort;
     },
   },
@@ -17,7 +16,7 @@ export default {
     setArray: (state, arrayToSort) => (state.arrayToSort = arrayToSort),
   },
   actions: {
-    setArray({ commit, arrayToSort }) {
+    setArray({ commit }, arrayToSort) {
       commit('setArray', arrayToSort);
     },
   },

@@ -66,6 +66,7 @@
       >Stop</v-btn>
       <span class="subheading font-weight-light ml-2 mr-1">Steps: {{ steps }}</span>
       <span class="subheading font-weight-light mx-4">Swaps: {{ swaps }}</span>
+      <span class="subheading font-weight-light ml-5">Selected Sorting Algorithm: {{ algorithms[selectedAlg] }}</span>
     </div>
   </v-card-text>
 </template>
@@ -77,10 +78,12 @@ export default {
   name: "ArrayConfig",
 
   data: () => ({
-    sliderMin: 3,
+    sliderMin: 5,
     sliderMax: 200,
     arraySize: 30,
     sortSpeed: 2,
+    algorithms: ["Bubble Sort", "Quick Sort", "Heap Sort", "Merge Sort"],
+    selectedAlg: 0,
     speedLabels: ["Snail", "Turtle", "Rabbit", "Cheetah", "Golden Eagle"],
     speedValues: [200, 100, 50, 25, 1],
     swaps: 0,
@@ -92,7 +95,7 @@ export default {
   }),
 
   computed: {
-    ...mapGetters(["getStageHeight"]),
+    ...mapGetters(["getStageHeight", "getStageWidth", "getArrayToSort"]),
     color() {
       if (this.arraySize < this.sliderMax * 0.25) return "blue";
       if (this.arraySize < this.sliderMax * 0.5) return "green";
@@ -101,6 +104,7 @@ export default {
     }
   },
   created() {
+    this.generateArray();
   },
   
   methods: {
@@ -112,39 +116,65 @@ export default {
       this.steps = 0;
 
       var array = [];
-      var x = 5; //first position
+      const mid_x = Math.floor(this.getStageWidth / 2) + 100; // first x position in chart; 100 is the offset of left pane
 
-      // var xIncrement = stageWidth / Math.pow(10, this.arraySize) + 10; // distance between points
-      // console.log("xIncrement " + xIncrement);
+      var strokeWidth = this.arraySize < 25 ? 40 : this.arraySize < 50 ? 20 : this.arraySize < 75 ? 10 : this.arraySize < 100 ? 7 : this.arraySize < 150 ? 4 : 2;
+      var distanceBtwnPoints = this.arraySize < 25 ? 45 : this.arraySize < 50 ? 23 : this.arraySize < 75 ? 13 : this.arraySize < 100 ? 11 : this.arraySize < 150 ? 7 : 5;
 
-      //resize height of lines
-      // this.strokeWidth = stageWidth / Math.pow(10, this.arraySize) + 5;
-      // console.log("strokeWidth " + this.strokeWidth);
-
-      console.log(array.length)
-      console.log(this.arraySize)
-
+      let left_x = mid_x
+      let right_x = mid_x
+      let next_x = 0
       while (array.length < this.arraySize) {
-        console.log(array.length)
-        console.log(array)
-        var rand = Math.floor(Math.random() * this.getStageHeight) + 10; // random number between 10 and maxHeight
-        // var rand = Math.floor(Math.random()) + 10; //maxHeight is the canvas width size
-        console.log(rand)
-        // +10 as 10 is the minimum for the line in chart to become visisble
-        var obj = {
-          id: rand,
-          y: rand,
-          stroke: "blue"
-        };
+        let rand = Math.floor(Math.random() * this.getStageHeight) + 10;        
+
         if (array.findIndex(val => val.y === rand) === -1) {
-          console.log('aqui')
-          // x += xIncrement; // distance between points
-          x += 10; // distance between points
-          obj.x = x;
+          if (array.length < Math.floor(this.arraySize / 2)) {
+            left_x -= distanceBtwnPoints
+            next_x = left_x
+          }
+          else if (array.length > Math.floor(this.arraySize / 2)) {
+            right_x += distanceBtwnPoints
+            next_x = right_x
+          }
+          else {
+            next_x = right_x
+          }
+
+          let obj = {
+            id: rand,
+            y: rand,
+            stroke: "blue",
+            strokeWidth: strokeWidth,
+            x: next_x,
+          };
+
+          console.log(obj)
+          
           array.push(obj);
         }
       }
-      // this.arrayToSort = array;
+
+      // while (array.length < this.arraySize) {
+      //   // random number between 10 and maxHeight
+      //   // +10 as 10 is the minimum for the line in chart to become visisble
+      //   let rand = Math.floor(Math.random() * this.getStageHeight) + 10;
+
+      //   // line obj creation which will be used in the KonvaChart
+      //   let obj = {
+      //     id: rand,
+      //     y: rand,
+      //     stroke: "blue",
+      //     strokeWidth: strokeWidth,
+      //     x: 10,
+      //   };
+
+      //   if (array.findIndex(val => val.y === rand) === -1) {
+      //     // x += xIncrement; // distance between points
+      //     x += distanceBtwnPoints; // distance between points
+      //     array.push(obj);
+      //   }
+      // }
+      this.setArray(array);
     },
     decrementSize() {
       this.arraySize -= 10;

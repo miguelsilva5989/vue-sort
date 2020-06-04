@@ -1,5 +1,5 @@
 <template>
-  <div v-bind:style="{ height: '100vh', width: '100vw' }" ref="container">
+  <div ref="container">
     <v-stage :config="configKonva" ref="stage">
       <v-layer>
         <v-line
@@ -7,30 +7,44 @@
           v-for="item in getArrayToSort"
           :key="item.id"
           :config="{
-            points: [item.x, 5, item.x, item.y], // x1, y1, x2, y2
+            points: [item.x, 0, item.x, item.y], // x1, y1, x2, y2
             stroke: item.stroke,
-            strokeWidth: strokeWidth,
-            lineCap: 'round',
-            lineJoin: 'round',
+            strokeWidth: item.strokeWidth
           }"
         ></v-line>
+        <!-- <v-line
+          key="1"
+          :config="{
+            points: [50, 0, 50, 100],
+            stroke: 'green',
+            offsetX: -5,
+          }"
+        ></v-line>
+        <v-line
+          key="2"
+          :config="{
+            points: [60, 0, 60, 100],
+            stroke: 'yellow'
+          }"
+        ></v-line> -->
       </v-layer>
     </v-stage>
+    
   </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
 const width = window.innerWidth;
-const height = window.innerHeight;
+// const height = window.innerHeight;
 
 export default {
   name: "KonvaChart",
   data: () => ({
     configKonva: {
-      width: width,
-      height: height
+      width: width - 200,
+      height: 200,
     }
   }),
 
@@ -40,9 +54,10 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["getArrayToSort"]),    
+    ...mapGetters(["getArrayToSort", "getStageWidth", "getStageHeight"]),
   },
   methods: {
+    ...mapActions(["setStageWidth", "setStageHeight"]),
     changeRect: function() {
       const container = this.$refs.container;
 
@@ -50,19 +65,20 @@ export default {
         return;
       }
 
-      const height = container.offsetHeight;
       const width = container.offsetWidth;
+      const height = container.offsetHeight;
 
-      // console.log(height, height);
+      // console.log(width, height);
       this.configKonva.width = width;
       this.configKonva.height = height;
+
+      this.setStageWidth(width - 200);
+      this.setStageHeight(height);
     }
   }
 };
 </script>
 
 <style>
-html {
-  overflow-y: hidden;
-}
+
 </style>

@@ -6,14 +6,14 @@
 </template>
 
 <script>
-import KonvaChart from '@/components/KonvaChart.vue'
 import ArrayConfig from '@/components/ArrayConfig.vue'
+import KonvaChart from '@/components/KonvaChart.vue'
 
 export default {
   name: "Sort",
   components: {
-    KonvaChart,
     ArrayConfig,
+    KonvaChart,
   },
 
   data: () => ({
