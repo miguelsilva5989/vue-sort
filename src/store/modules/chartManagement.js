@@ -6,7 +6,7 @@ Vue.use(Vuex);
 export default {
   state: {
     stageWidth: 800,
-    stageHeight: 200,
+    stageHeight: 300,
   },
   getters: {
     getStageWidth: (state) => state.stageWidth,
@@ -18,11 +18,9 @@ export default {
   },
   actions: {
     setStageWidth({ commit }, stageWidth) {
-      // console.log('stageWidth ', stageWidth);
       commit('setStageWidth', stageWidth);
     },
     setStageHeight({ commit }, stageHeight) {
-      // console.log('stageHeight ', stageHeight);
       commit('setStageHeight', stageHeight);
     },
   },

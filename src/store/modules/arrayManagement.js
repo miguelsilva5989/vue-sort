@@ -49,6 +49,11 @@ export default {
     incrementSwaps: (state) => state.swaps++,
     resetSteps: (state) => (state.steps = 0),
     resetSwaps: (state) => (state.swaps = 0),
+    changeColor: (state, { index, color }) =>
+      (state.arrayToSort[index].stroke = color),
+    changeAllColors: (state, color) => [
+      ...state.arrayToSort.map((pos) => (pos.stroke = color)),
+    ],
   },
   actions: {
     setArray({ commit, dispatch }, arrayToSort) {
@@ -62,6 +67,16 @@ export default {
     resetCounters({ commit }) {
       commit('resetSteps');
       commit('resetSwaps');
+    },
+    changeColor({ commit }, { index, color }) {
+      commit('changeColor', { index, color });
+    },
+    changeAllColors({ commit }, color) {
+      console.log(color);
+      commit('changeColor', color);
+    },
+    timer(_, ms) {
+      return new Promise((res) => setTimeout(res, ms));
     },
   },
 };

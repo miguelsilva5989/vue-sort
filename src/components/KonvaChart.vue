@@ -43,7 +43,7 @@ export default {
   data: () => ({
     configKonva: {
       width: width - 200,
-      height: 200,
+      height: 300,
     }
   }),
 

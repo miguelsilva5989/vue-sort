@@ -8,17 +8,11 @@ export default {
     bubbleSort: () => console.log('bubbleSort'),
   },
   actions: {
-    timer(context, ms) {
-      return new Promise((res) => setTimeout(res, ms));
-    },
-    changeColor({ rootState }, payload) {
-      rootState.arrayManagement.arrayToSort[payload.index].stroke =
-        payload.color;
-    },
     async bubbleSort({ commit, dispatch, rootState }) {
       const sortSpeed = rootState.arrayManagement.selectedSortSpeed;
 
       commit('arrayManagement/setIsSorting', true, { root: true });
+      commit('arrayManagement/setIsSorted', false, { root: true });
 
       if (rootState.arrayManagement.paused) {
         commit('arrayManagement/setIsPaused', false, { root: true });
@@ -45,9 +39,15 @@ export default {
 
           // change to cyan the values which are being analysed
           if (i + 1 < arrayLen) {
-            dispatch('changeColor', { index: i, color: 'cyan' });
-            dispatch('changeColor', { index: i + 1, color: 'cyan' });
-            await dispatch('timer', sortSpeed);
+            dispatch('arrayManagement/changeColor', {
+              index: i,
+              color: 'cyan',
+            });
+            dispatch('arrayManagement/changeColor', {
+              index: i + 1,
+              color: 'cyan',
+            });
+            await dispatch('arrayManagement/timer', sortSpeed);
           }
 
           // Bubble Sort Logic
@@ -55,9 +55,12 @@ export default {
           if (inputArr[i] > inputArr[i + 1]) {
             commit('arrayManagement/incrementSwaps', null, { root: true });
 
-            dispatch('changeColor', { index: i, color: 'red' });
-            dispatch('changeColor', { index: i + 1, color: 'red' });
-            await dispatch('timer', sortSpeed);
+            dispatch('arrayManagement/changeColor', { index: i, color: 'red' });
+            dispatch('arrayManagement/changeColor', {
+              index: i + 1,
+              color: 'red',
+            });
+            await dispatch('arrayManagement/timer', sortSpeed);
 
             inputArr[i] = inputArr[i + 1];
             rootState.arrayManagement.arrayToSort[i].y = inputArr[i + 1];
@@ -71,19 +74,26 @@ export default {
 
           //change back to blue after swapping
           if (i + 1 < arrayLen) {
-            await dispatch('timer', sortSpeed);
-            dispatch('changeColor', { index: i, color: 'blue' });
-            dispatch('changeColor', { index: i + 1, color: 'blue' });
+            await dispatch('arrayManagement/timer', sortSpeed);
+            dispatch('arrayManagement/changeColor', {
+              index: i,
+              color: 'blue',
+            });
+            dispatch('arrayManagement/changeColor', {
+              index: i + 1,
+              color: 'blue',
+            });
           }
         }
       } while (swapped);
 
+      if (!rootState.arrayManagement.forceStop) {
+        commit('arrayManagement/setIsSorted', true, { root: true });
+        commit('arrayManagement/changeAllColors', '#00AA66', { root: true });
+      }
       commit('arrayManagement/setIsForceStop', false, { root: true });
       commit('arrayManagement/setIsSorting', false, { root: true });
       commit('arrayManagement/setIsPaused', true, { root: true });
-      if (!rootState.arrayManagement.forceStop) {
-        commit('arrayManagement/setIsSorted', true, { root: true });
-      }
 
       // do {
       //   swapped = false;

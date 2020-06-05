@@ -66,7 +66,8 @@
       >Stop</v-btn>
       <span class="subheading font-weight-light ml-2 mr-1">Steps: {{ getSteps }}</span>
       <span class="subheading font-weight-light mx-4">Swaps: {{ getSwaps }}</span>
-      <span class="subheading font-weight-light ml-5">Selected Sorting Algorithm: {{ $store.getters.getSelectedAlgorithm }}</span>
+      <span class="subheading font-weight-light ml-5">Selected Sorting Algorithm: </span>
+      <span class="title font-weight-bold ml-1">{{ $store.getters.getSelectedAlgorithm }}</span>
     </div>
   </v-card-text>
 </template>
