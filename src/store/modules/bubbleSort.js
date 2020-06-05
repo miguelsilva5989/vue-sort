@@ -10,7 +10,7 @@ export default {
   actions: {
     async bubbleSort({ commit, rootState }) {
       console.log('sorting....');
-      console.log(rootState.arrayManagement.arrayToSort);
+      console.log(rootState.arrayToSort);
 
       // var sortSpeed = this.speedValues[this.sortSpeed];
       // console.log(sortSpeed);
