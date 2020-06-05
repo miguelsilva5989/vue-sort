@@ -86,8 +86,12 @@ export default {
     speedLabels: ['Snail', 'Turtle', 'Rabbit', 'Cheetah', 'Golden Eagle'],
     speedValues: [200, 100, 50, 25, 1],
   }),
+  created() {
+    this.generateArray();
+  },
 
   computed: {
+    
     ...mapGetters(["getSwaps","getSteps","isSorting","isSorted","isPaused"]),
     color() {
       if (this.arraySize < this.sliderMax * 0.25) return "blue";
@@ -96,11 +100,9 @@ export default {
       return "red";
     }
   },
-  created() {
-    this.generateArray();
-  },
 
-  watch: {
+
+  watch: {    
     sortSpeed(newValue) {
       this.$store.commit("arrayManagement/setSortSpeed", this.speedValues[newValue])
     }
@@ -108,7 +110,7 @@ export default {
   
   methods: {
     ...mapActions(["setArray", "forceStop"]),
-    handleSortingFunction() {
+    async handleSortingFunction() {
       var fnMap = {
         "Bubble Sort": "bubbleSort",
       }
@@ -116,6 +118,7 @@ export default {
     },
     generateArray() {
       var array = [];
+
       // calculates middle point in chart area
       const mid_x = Math.floor(this.$store.getters.getStageWidth / 2) + 100; // first x position in chart; 100 is the offset of left pane
 
@@ -125,6 +128,7 @@ export default {
       let left_x = mid_x
       let right_x = mid_x
       let next_x = 0
+      let i = 0;
       while (array.length < this.arraySize) {
         let rand = Math.floor(Math.random() * this.$store.getters.getStageHeight) + 10;
 
@@ -151,7 +155,10 @@ export default {
             x: next_x,
           };
           
-          array.push(obj);
+          array[i] = obj;
+          i++;
+
+          // array.push(obj);
         }
       }
       this.setArray(array);

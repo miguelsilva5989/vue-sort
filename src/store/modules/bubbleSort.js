@@ -8,8 +8,12 @@ export default {
     bubbleSort: () => console.log('bubbleSort'),
   },
   actions: {
-    changeColor(array, index, color) {
-      array[index].stroke = color;
+    timer(ms) {
+      return new Promise((res) => setTimeout(res, ms));
+    },
+    changeColor({ rootState }, payload) {
+      rootState.arrayManagement.arrayToSort[payload.index].stroke =
+        payload.color;
     },
     async bubbleSort({ commit, dispatch, rootState }) {
       // const sortSpeed = rootState.arrayManagement.selectedSortSpeed;
@@ -36,8 +40,24 @@ export default {
           if (rootState.arrayManagement.forceStop) {
             break;
           }
+
+          commit('arrayManagement/incrementSteps', null, { root: true });
+
+          // change to cyan the values which are being analysed
+          if (i + 1 < arrayLen) {
+            dispatch('changeColor', { index: i, color: 'cyan' });
+            dispatch('changeColor', { index: i + 1, color: 'cyan' });
+            await dispatch('timer', 1000);
+          }
         }
       } while (swapped);
+
+      commit('arrayManagement/setIsForceStop', false, { root: true });
+      commit('arrayManagement/setIsSorting', false, { root: true });
+      commit('arrayManagement/setIsPaused', true, { root: true });
+      if (!rootState.arrayManagement.forceStop) {
+        commit('arrayManagement/setIsSorted', true, { root: true });
+      }
 
       // do {
       //   swapped = false;
@@ -49,7 +69,7 @@ export default {
 
       //     this.steps++;
 
-      //     // change to green the values which are being analysed
+      //     // change to cyan the values which are being analysed
       //     if (
       //       i + 1 < arrayLen &&
       //       !maxSortedValues.includes(this.arrayToSort[i + 1])

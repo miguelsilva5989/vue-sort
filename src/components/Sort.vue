@@ -26,13 +26,11 @@ export default {
     // this.generateArray();
   },
 
-  
-
   methods: {
     //timer function
-    timer(ms) {
-      return new Promise(res => setTimeout(res, ms));
-    },    
+    // timer(ms) {
+    //   return new Promise(res => setTimeout(res, ms));
+    // },    
     // async bubbleSort() {
     //   var sortSpeed = this.speedValues[this.sortSpeed]
     //   console.log(sortSpeed)
