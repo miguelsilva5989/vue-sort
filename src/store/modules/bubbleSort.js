@@ -8,33 +8,41 @@ export default {
     bubbleSort: () => console.log('bubbleSort'),
   },
   actions: {
-    async bubbleSort({ commit, rootState }) {
-      console.log('sorting....');
-      console.log(rootState.arrayManagement.arrayToSort);
+    changeColor(array, index, color) {
+      array[index].stroke = color;
+    },
+    async bubbleSort({ commit, dispatch, rootState }) {
+      // const sortSpeed = rootState.arrayManagement.selectedSortSpeed;
 
-      // var sortSpeed = this.speedValues[this.sortSpeed];
-      // console.log(sortSpeed);
+      commit('arrayManagement/setIsSorting', true, { root: true });
 
-      // this.sorting = true;
+      if (rootState.arrayManagement.paused) {
+        commit('arrayManagement/setIsPaused', false, { root: true });
+        commit('arrayManagement/setIsForceStop', false, { root: true });
+      } else {
+        dispatch('arrayManagement/resetCounters', null, { root: true });
+      }
 
-      // if (this.paused) {
-      //   this.paused = false;
-      //   this.forceStop = false;
-      // } else {
-      //   this.swaps = 0; //reset swaps number
-      //   this.steps = 0; //reset steps number
-      // }
-
-      // let inputArr = this.arrayToSort.map((z) => z.y); //convert x in objects to an array
+      let inputArr = rootState.arrayManagement.arrayToSort.map((z) => z.y); //convert x in objects to an array
       // let maxSortedValues = inputArr.slice(); //checks if values are already sorted and will not be moved again
 
-      // let len = inputArr.length;
-      // let swapped;
+      const arrayLen = inputArr.length;
+      let swapped;
+
+      do {
+        swapped = false;
+        for (let i = 0; i < arrayLen; i++) {
+          //if Stop button pressed
+          if (rootState.arrayManagement.forceStop) {
+            break;
+          }
+        }
+      } while (swapped);
 
       // do {
       //   swapped = false;
-      //   for (let i = 0; i < len; i++) {
-      //     if (this.forceStop) {
+      //   for (let i = 0; i < arrayLen; i++) {
+      //     if (rootState.arrayManagement.forceStop) {
       //       //if Stop button pressed
       //       break;
       //     }
@@ -43,7 +51,7 @@ export default {
 
       //     // change to green the values which are being analysed
       //     if (
-      //       i + 1 < len &&
+      //       i + 1 < arrayLen &&
       //       !maxSortedValues.includes(this.arrayToSort[i + 1])
       //     ) {
       //       this.changeColor(i, 'cyan');
@@ -70,7 +78,7 @@ export default {
 
       //     //change to green after swapping
       //     if (
-      //       i + 1 < len &&
+      //       i + 1 < arrayLen &&
       //       !maxSortedValues.includes(this.arrayToSort[i + 1])
       //     ) {
       //       await this.timer(sortSpeed);
@@ -82,7 +90,7 @@ export default {
       //     if (Math.max(...maxSortedValues) === tmp) {
       //       await this.timer(sortSpeed);
       //       maxSortedValues.pop(tmp);
-      //       if (i + 1 < len) {
+      //       if (i + 1 < arrayLen) {
       //         this.arrayToSort[i + 1].stroke = 'green';
       //       }
       //     }
@@ -100,7 +108,7 @@ export default {
       //   this.sorted = true;
       // }
 
-      commit('placeholder');
+      // commit('placeholder');
     },
   },
 };

@@ -13,6 +13,7 @@ export default {
     sorted: false,
     forceStop: false,
     paused: true,
+    selectedSortSpeed: 50,
   },
   getters: {
     getArrayToSort: (state) => {
@@ -39,14 +40,28 @@ export default {
   },
   mutations: {
     setArray: (state, arrayToSort) => (state.arrayToSort = arrayToSort),
-    forceStop: (state) => (state.isForceStop = !state.isForceStop),
+    setSortSpeed: (state, sortSpeed) => (state.selectedSortSpeed = sortSpeed),
+    setIsSorting: (state, isSorting) => (state.sorting = isSorting),
+    setIsSorted: (state, isSorted) => (state.sorted = isSorted),
+    setIsForceStop: (state, isForceStop) => (state.forceStop = isForceStop),
+    setIsPaused: (state, isPaused) => (state.paused = isPaused),
+    incrementSteps: (state) => state.steps++,
+    incrementSwaps: (state) => state.swaps++,
+    resetSteps: (state) => (state.steps = 0),
+    resetSwaps: (state) => (state.swaps = 0),
   },
   actions: {
-    setArray({ commit }, arrayToSort) {
+    setArray({ commit, dispatch }, arrayToSort) {
+      dispatch('resetCounters');
+      commit('setIsSorted', false);
       commit('setArray', arrayToSort);
     },
     forceStop({ commit }) {
-      commit('forceStop');
+      commit('setIsForceStop', true);
+    },
+    resetCounters({ commit }) {
+      commit('resetSteps');
+      commit('resetSwaps');
     },
   },
 };

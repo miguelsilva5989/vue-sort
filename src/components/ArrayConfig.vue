@@ -64,8 +64,8 @@
         color="red"
         @click="forceStop"
       >Stop</v-btn>
-      <span class="subheading font-weight-light ml-2 mr-1">Steps: {{ steps }}</span>
-      <span class="subheading font-weight-light mx-4">Swaps: {{ swaps }}</span>
+      <span class="subheading font-weight-light ml-2 mr-1">Steps: {{ getSteps }}</span>
+      <span class="subheading font-weight-light mx-4">Swaps: {{ getSwaps }}</span>
       <span class="subheading font-weight-light ml-5">Selected Sorting Algorithm: {{ $store.getters.getSelectedAlgorithm }}</span>
     </div>
   </v-card-text>
@@ -88,7 +88,7 @@ export default {
   }),
 
   computed: {
-    ...mapGetters(["getSwaps","getSteps","isSorting","isSorted","isForceStop","isPaused"]),
+    ...mapGetters(["getSwaps","getSteps","isSorting","isSorted","isPaused"]),
     color() {
       if (this.arraySize < this.sliderMax * 0.25) return "blue";
       if (this.arraySize < this.sliderMax * 0.5) return "green";
@@ -98,6 +98,12 @@ export default {
   },
   created() {
     this.generateArray();
+  },
+
+  watch: {
+    sortSpeed(newValue) {
+      this.$store.commit("arrayManagement/setSortSpeed", this.speedValues[newValue])
+    }
   },
   
   methods: {
@@ -109,11 +115,6 @@ export default {
       this.$store.dispatch(fnMap[this.$store.getters.getSelectedAlgorithm])
     },
     generateArray() {
-      this.sorted = false;
-      // reset counters
-      this.swaps = 0;
-      this.steps = 0;
-
       var array = [];
       // calculates middle point in chart area
       const mid_x = Math.floor(this.$store.getters.getStageWidth / 2) + 100; // first x position in chart; 100 is the offset of left pane

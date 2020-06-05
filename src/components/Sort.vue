@@ -32,10 +32,7 @@ export default {
     //timer function
     timer(ms) {
       return new Promise(res => setTimeout(res, ms));
-    },
-    changeColor(index, color) {
-      this.arrayToSort[index].stroke = color;
-    },
+    },    
     // async bubbleSort() {
     //   var sortSpeed = this.speedValues[this.sortSpeed]
     //   console.log(sortSpeed)
