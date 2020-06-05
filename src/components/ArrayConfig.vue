@@ -117,33 +117,43 @@ export default {
       this.$store.dispatch(fnMap[this.$store.getters.getSelectedAlgorithm])
     },
     generateArray() {
-      var array = [];
-
+      //used to place the chart value in the correct position of the array. if we would just push the values to the array, the values would be sorted starting from the center and moving to the left size, and then from the center to the right side
+      let array = Array.apply(null, Array(this.arraySize)).map(function (x, i) {return {
+            id: i,
+            y: 0,
+            x: 0,
+          };})
+        
       // calculates middle point in chart area
       const mid_x = Math.floor(this.$store.getters.getStageWidth / 2) + 100; // first x position in chart; 100 is the offset of left pane
 
       var strokeWidth = this.arraySize < 25 ? 40 : this.arraySize < 50 ? 20 : this.arraySize < 75 ? 10 : this.arraySize < 100 ? 7 : this.arraySize < 150 ? 4 : 2;
       var distanceBtwnPoints = this.arraySize < 25 ? 45 : this.arraySize < 50 ? 23 : this.arraySize < 75 ? 13 : this.arraySize < 100 ? 11 : this.arraySize < 150 ? 7 : 5;
 
-      let left_x = mid_x
-      let right_x = mid_x
-      let next_x = 0
+      let left_x = mid_x;
+      let right_x = mid_x;
+      let array_pos = Math.floor(this.arraySize / 2); //used to place the chart value in the correct position of the array. if we would just push the values to the array, the values would be sorted starting from the center and moving to the left size, and then from the center to the right side
+      let next_x = 0;
       let i = 0;
-      while (array.length < this.arraySize) {
+
+      while (i < this.arraySize) {
         let rand = Math.floor(Math.random() * this.$store.getters.getStageHeight) + 10;
 
         // if value not yet in array
         if (array.findIndex(val => val.y === rand) === -1) {
           //used to display X positions to the left and right of middle point
-          if (array.length < Math.floor(this.arraySize / 2)) {
+          if (i < Math.floor(this.arraySize / 2)) {
             left_x -= distanceBtwnPoints
+            array_pos -= 1
             next_x = left_x
           }
-          else if (array.length > Math.floor(this.arraySize / 2)) {
+          else if (i > Math.floor(this.arraySize / 2)) {
             right_x += distanceBtwnPoints
+            array_pos += 1
             next_x = right_x
           }
           else {
+            array_pos = Math.floor(this.arraySize / 2)
             next_x = right_x
           }
 
@@ -154,11 +164,9 @@ export default {
             strokeWidth: strokeWidth,
             x: next_x,
           };
-          
-          array[i] = obj;
-          i++;
 
-          // array.push(obj);
+          array[array_pos] = obj
+          i++;
         }
       }
       this.setArray(array);
