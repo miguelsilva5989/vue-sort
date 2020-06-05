@@ -8,7 +8,7 @@ export default {
     bubbleSort: () => console.log('bubbleSort'),
   },
   actions: {
-    timer(ms) {
+    timer(context, ms) {
       return new Promise((res) => setTimeout(res, ms));
     },
     changeColor({ rootState }, payload) {
@@ -16,7 +16,7 @@ export default {
         payload.color;
     },
     async bubbleSort({ commit, dispatch, rootState }) {
-      // const sortSpeed = rootState.arrayManagement.selectedSortSpeed;
+      const sortSpeed = rootState.arrayManagement.selectedSortSpeed;
 
       commit('arrayManagement/setIsSorting', true, { root: true });
 
@@ -47,7 +47,7 @@ export default {
           if (i + 1 < arrayLen) {
             dispatch('changeColor', { index: i, color: 'cyan' });
             dispatch('changeColor', { index: i + 1, color: 'cyan' });
-            await dispatch('timer', 1000);
+            await dispatch('timer', sortSpeed);
           }
         }
       } while (swapped);
