@@ -49,6 +49,32 @@ export default {
             dispatch('changeColor', { index: i + 1, color: 'cyan' });
             await dispatch('timer', sortSpeed);
           }
+
+          // Bubble Sort Logic
+          let tmp = inputArr[i];
+          if (inputArr[i] > inputArr[i + 1]) {
+            commit('arrayManagement/incrementSwaps', null, { root: true });
+
+            dispatch('changeColor', { index: i, color: 'red' });
+            dispatch('changeColor', { index: i + 1, color: 'red' });
+            await dispatch('timer', sortSpeed);
+
+            inputArr[i] = inputArr[i + 1];
+            rootState.arrayManagement.arrayToSort[i].y = inputArr[i + 1];
+
+            inputArr[i + 1] = tmp;
+            rootState.arrayManagement.arrayToSort[i + 1].y = tmp;
+
+            swapped = true;
+          }
+          // END Bubble Sort Logic
+
+          //change back to blue after swapping
+          if (i + 1 < arrayLen) {
+            await dispatch('timer', sortSpeed);
+            dispatch('changeColor', { index: i, color: 'blue' });
+            dispatch('changeColor', { index: i + 1, color: 'blue' });
+          }
         }
       } while (swapped);
 
@@ -96,7 +122,7 @@ export default {
       //       swapped = true;
       //     }
 
-      //     //change to green after swapping
+      //     //change back to blue after swapping
       //     if (
       //       i + 1 < arrayLen &&
       //       !maxSortedValues.includes(this.arrayToSort[i + 1])
