@@ -4,6 +4,7 @@ import Vuex from 'vuex';
 Vue.use(Vuex);
 
 export default {
+  namespaced: true,
   state: {
     arrayToSort: [],
     swaps: 0,

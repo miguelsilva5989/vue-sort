@@ -66,13 +66,14 @@
       >Stop</v-btn>
       <span class="subheading font-weight-light ml-2 mr-1">Steps: {{ steps }}</span>
       <span class="subheading font-weight-light mx-4">Swaps: {{ swaps }}</span>
-      <span class="subheading font-weight-light ml-5">Selected Sorting Algorithm: {{ getSelectedAlgorithm }}</span>
+      <span class="subheading font-weight-light ml-5">Selected Sorting Algorithm: {{ $store.getters.getSelectedAlgorithm }}</span>
     </div>
   </v-card-text>
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import {createNamespacedHelpers} from "vuex";
+const { mapActions, mapGetters } = createNamespacedHelpers("arrayManagement");
 
 export default {
   name: "ArrayConfig",
@@ -87,7 +88,7 @@ export default {
   }),
 
   computed: {
-    ...mapGetters(["getStageHeight", "getStageWidth", "getSwaps","getSteps","isSorting","isSorted","isForceStop","isPaused", "getSelectedAlgorithm"]),
+    ...mapGetters(["getSwaps","getSteps","isSorting","isSorted","isForceStop","isPaused"]),
     color() {
       if (this.arraySize < this.sliderMax * 0.25) return "blue";
       if (this.arraySize < this.sliderMax * 0.5) return "green";
@@ -100,12 +101,12 @@ export default {
   },
   
   methods: {
-    ...mapActions(["setArray", "forceStop", "bubbleSort"]),
+    ...mapActions(["setArray", "forceStop"]),
     handleSortingFunction() {
       var fnMap = {
-        "Bubble Sort": this.bubbleSort,
+        "Bubble Sort": "bubbleSort",
       }
-      fnMap[this.getSelectedAlgorithm]()
+      this.$store.dispatch(fnMap[this.$store.getters.getSelectedAlgorithm])
     },
     generateArray() {
       this.sorted = false;
@@ -115,7 +116,7 @@ export default {
 
       var array = [];
       // calculates middle point in chart area
-      const mid_x = Math.floor(this.getStageWidth / 2) + 100; // first x position in chart; 100 is the offset of left pane
+      const mid_x = Math.floor(this.$store.getters.getStageWidth / 2) + 100; // first x position in chart; 100 is the offset of left pane
 
       var strokeWidth = this.arraySize < 25 ? 40 : this.arraySize < 50 ? 20 : this.arraySize < 75 ? 10 : this.arraySize < 100 ? 7 : this.arraySize < 150 ? 4 : 2;
       var distanceBtwnPoints = this.arraySize < 25 ? 45 : this.arraySize < 50 ? 23 : this.arraySize < 75 ? 13 : this.arraySize < 100 ? 11 : this.arraySize < 150 ? 7 : 5;
@@ -124,7 +125,7 @@ export default {
       let right_x = mid_x
       let next_x = 0
       while (array.length < this.arraySize) {
-        let rand = Math.floor(Math.random() * this.getStageHeight) + 10;        
+        let rand = Math.floor(Math.random() * this.$store.getters.getStageHeight) + 10;
 
         // if value not yet in array
         if (array.findIndex(val => val.y === rand) === -1) {
