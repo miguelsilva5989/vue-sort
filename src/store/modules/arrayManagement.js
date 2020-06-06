@@ -61,6 +61,19 @@ export default {
       commit('setIsSorted', false);
       commit('setArray', arrayToSort);
     },
+    initSort({ commit, dispatch, getters }) {
+      commit('setIsSorting', true);
+      commit('setIsSorted', false);
+
+      if (getters.isPaused) {
+        commit('setIsPaused', false);
+        commit('setIsForceStop', false);
+      } else {
+        dispatch('resetCounters', null);
+      }
+
+      return getters.getArrayToSort.map((z) => z.y); // convert y values in objects to an array
+    },
     forceStop({ commit }) {
       commit('setIsForceStop', true);
     },

@@ -6,7 +6,7 @@ Vue.use(Vuex);
 export default {
   state: {
     stageWidth: 800,
-    stageHeight: 300,
+    stageHeight: 350,
   },
   getters: {
     getStageWidth: (state) => state.stageWidth,

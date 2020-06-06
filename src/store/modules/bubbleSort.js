@@ -6,18 +6,11 @@ Vue.use(Vuex);
 export default {
   actions: {
     async bubbleSort({ commit, dispatch, rootState }) {
-      commit('arrayManagement/setIsSorting', true, { root: true });
-      commit('arrayManagement/setIsSorted', false, { root: true });
-
-      if (rootState.arrayManagement.paused) {
-        commit('arrayManagement/setIsPaused', false, { root: true });
-        commit('arrayManagement/setIsForceStop', false, { root: true });
-      } else {
-        dispatch('arrayManagement/resetCounters', null, { root: true });
-      }
-
-      let inputArr = rootState.arrayManagement.arrayToSort.map((z) => z.y); //convert x in objects to an array
-      // let maxSortedValues = inputArr.slice(); //checks if values are already sorted and will not be moved again
+      let inputArr = await dispatch('arrayManagement/initSort', null, {
+        root: true,
+      }).then((res) => {
+        return res;
+      });
 
       const arrayLen = inputArr.length;
       let swapped;
@@ -49,8 +42,8 @@ export default {
           }
 
           // Bubble Sort Logic
-          let tmp = inputArr[i];
           if (inputArr[i] > inputArr[i + 1]) {
+            let tmp = inputArr[i];
             commit('arrayManagement/incrementSwaps', null, { root: true });
 
             dispatch('arrayManagement/changeColor', { index: i, color: 'red' });
@@ -72,7 +65,10 @@ export default {
 
           //change back to blue after swapping
           if (i + 1 < arrayLen) {
-            await dispatch('arrayManagement/timer', sortSpeed);
+            // in fastest speed, skip this timer in order to sort faster visually
+            if (sortSpeed != 1) {
+              await dispatch('arrayManagement/timer', sortSpeed);
+            }
             dispatch('arrayManagement/changeColor', {
               index: i,
               color: 'blue',
