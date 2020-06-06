@@ -12,10 +12,10 @@
       @input="generateArray"
     >
       <template v-slot:prepend>
-        <v-icon :color="color" @click="decrementSize();generateArray();">mdi-minus</v-icon>
+        <v-icon :disabled="isSorting" :color="color" @click="decrementSize();generateArray();">mdi-minus</v-icon>
       </template>
       <template v-slot:append>
-        <v-icon :color="color" @click="incrementSize();generateArray();">mdi-plus</v-icon>
+        <v-icon :disabled="isSorting" :color="color" @click="incrementSize();generateArray();">mdi-plus</v-icon>
       </template>
     </v-slider>
 
@@ -24,7 +24,7 @@
     <v-slider
       v-model="sortSpeed"
       :tick-labels="speedLabels"
-      :disabled="isSorting"
+      
       ticks="always"
       tick-size="4"
       step="1"

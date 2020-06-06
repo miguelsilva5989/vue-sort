@@ -5,7 +5,9 @@ Vue.use(Vuex);
 
 export default {
   actions: {
-    async bubbleSort({ commit, dispatch, rootState }) {
+    async quickSort({ commit, dispatch, rootState }) {
+      const sortSpeed = rootState.arrayManagement.selectedSortSpeed;
+
       commit('arrayManagement/setIsSorting', true, { root: true });
       commit('arrayManagement/setIsSorted', false, { root: true });
 
@@ -25,9 +27,6 @@ export default {
       do {
         swapped = false;
         for (let i = 0; i < arrayLen; i++) {
-          // speed can be changed during sorting
-          let sortSpeed = rootState.arrayManagement.selectedSortSpeed;
-
           //if Stop button pressed
           if (rootState.arrayManagement.forceStop) {
             break;
