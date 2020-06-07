@@ -75,9 +75,9 @@ export default {
       await dispatch('arrayManagement/timer', sortSpeed);
 
       while (i <= j) {
-        commit('arrayManagement/incrementSteps', null, { root: true });
-
         while (payload.inputArr[i] < pivot) {
+          commit('arrayManagement/incrementSteps', null, { root: true });
+
           dispatch('arrayManagement/changeColor', {
             index: i,
             color: 'blue',
@@ -99,6 +99,8 @@ export default {
         await dispatch('arrayManagement/timer', sortSpeed);
 
         while (payload.inputArr[j] > pivot) {
+          commit('arrayManagement/incrementSteps', null, { root: true });
+
           dispatch('arrayManagement/changeColor', {
             index: j,
             color: 'blue',
@@ -118,6 +120,8 @@ export default {
         await dispatch('arrayManagement/timer', sortSpeed);
 
         if (i <= j) {
+          commit('arrayManagement/incrementSteps', null, { root: true });
+
           await dispatch('swap', {
             inputArr: payload.inputArr,
             leftIndex: i,
