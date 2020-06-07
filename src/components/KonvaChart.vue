@@ -12,21 +12,6 @@
             strokeWidth: item.strokeWidth
           }"
         ></v-line>
-        <!-- <v-line
-          key="1"
-          :config="{
-            points: [50, 0, 50, 100],
-            stroke: 'green',
-            offsetX: -5,
-          }"
-        ></v-line>
-        <v-line
-          key="2"
-          :config="{
-            points: [60, 0, 60, 100],
-            stroke: 'yellow'
-          }"
-        ></v-line> -->
       </v-layer>
     </v-stage>
     
@@ -46,6 +31,10 @@ export default {
       height: 350,
     }
   }),
+
+  beforeMount () {
+    this.changeRect();
+  },
 
   created () {
     window.addEventListener("resize", this.changeRect, { passive: true });

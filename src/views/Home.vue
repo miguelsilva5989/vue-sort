@@ -1,18 +1,21 @@
 <template>
-  <div class="home">
-    <Sort />
-  </div>
+  <v-container>
+    <ArrayConfig />
+    <KonvaChart />
+  </v-container>
 </template>
 
 <script>
 // @ is an alias to /src
-import Sort from '@/components/Sort.vue'
+import ArrayConfig from "@/components/ArrayConfig.vue";
+import KonvaChart from "@/components/KonvaChart.vue";
 
 export default {
-  name: 'Home',
+  name: "Home",
   components: {
-    Sort
+    ArrayConfig,
+    KonvaChart
   }
-}
+};
 </script>
 
