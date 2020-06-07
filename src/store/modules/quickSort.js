@@ -56,13 +56,12 @@ export default {
       return payload.inputArr;
     },
     async partition({ rootState, commit, dispatch }, payload) {
-      // speed can be changed during sorting
-      let sortSpeed = rootState.arrayManagement.selectedSortSpeed;
-
       //if Stop button pressed
       if (rootState.arrayManagement.forceStop) {
         return;
       }
+      // speed can be changed during sorting
+      let sortSpeed = rootState.arrayManagement.selectedSortSpeed;
 
       var pivotPos = Math.floor((payload.right + payload.left) / 2);
       var pivot = payload.inputArr[pivotPos], // middle element
@@ -79,24 +78,43 @@ export default {
         commit('arrayManagement/incrementSteps', null, { root: true });
 
         while (payload.inputArr[i] < pivot) {
-          i++;
-        }
-        while (payload.inputArr[j] > pivot) {
-          j--;
-        }
+          dispatch('arrayManagement/changeColor', {
+            index: i,
+            color: 'blue',
+          });
+          await dispatch('arrayManagement/timer', sortSpeed);
 
-        if (i != pivotPos) {
+          i++;
+
           dispatch('arrayManagement/changeColor', {
             index: i,
             color: 'cyan',
           });
+          await dispatch('arrayManagement/timer', sortSpeed);
         }
-        if (j != pivotPos) {
+        dispatch('arrayManagement/changeColor', {
+          index: i,
+          color: 'blue',
+        });
+        await dispatch('arrayManagement/timer', sortSpeed);
+
+        while (payload.inputArr[j] > pivot) {
+          dispatch('arrayManagement/changeColor', {
+            index: j,
+            color: 'blue',
+          });
+          await dispatch('arrayManagement/timer', sortSpeed);
+          j--;
           dispatch('arrayManagement/changeColor', {
             index: j,
             color: 'cyan',
           });
+          await dispatch('arrayManagement/timer', sortSpeed);
         }
+        dispatch('arrayManagement/changeColor', {
+          index: j,
+          color: 'blue',
+        });
         await dispatch('arrayManagement/timer', sortSpeed);
 
         if (i <= j) {
@@ -107,21 +125,26 @@ export default {
             sortSpeed: sortSpeed,
           });
 
-          //change back to blue after swapping
-          dispatch('arrayManagement/changeColor', {
-            index: i,
-            color: 'blue',
-          });
-          dispatch('arrayManagement/changeColor', {
-            index: j,
-            color: 'blue',
-          });
-          await dispatch('arrayManagement/timer', sortSpeed);
+          // change pivot color back to orange in case it was changed to red in the swap
+          if (i == pivotPos || j == pivotPos) {
+            dispatch('arrayManagement/changeColor', {
+              index: pivotPos,
+              color: 'orange',
+            });
+            await dispatch('arrayManagement/timer', sortSpeed);
+          }
 
           i++;
           j--;
         }
       }
+      //change pivot back to blue color
+      dispatch('arrayManagement/changeColor', {
+        index: pivotPos,
+        color: 'blue',
+      });
+      await dispatch('arrayManagement/timer', sortSpeed);
+
       return i;
     },
     async swap(
@@ -129,6 +152,8 @@ export default {
       { inputArr, leftIndex, rightIndex, sortSpeed }
     ) {
       commit('arrayManagement/incrementSwaps', null, { root: true });
+
+      await dispatch('arrayManagement/timer', sortSpeed);
       dispatch('arrayManagement/changeColor', {
         index: leftIndex,
         color: 'red',
@@ -139,6 +164,7 @@ export default {
       });
       await dispatch('arrayManagement/timer', sortSpeed);
 
+      // swap logic
       var temp = inputArr[leftIndex];
 
       inputArr[leftIndex] = inputArr[rightIndex];
@@ -146,6 +172,18 @@ export default {
 
       inputArr[rightIndex] = temp;
       rootState.arrayManagement.arrayToSort[rightIndex].y = temp;
+      // END swap logic
+
+      //change back to blue after swapping
+      dispatch('arrayManagement/changeColor', {
+        index: leftIndex,
+        color: 'blue',
+      });
+      dispatch('arrayManagement/changeColor', {
+        index: rightIndex,
+        color: 'blue',
+      });
+      await dispatch('arrayManagement/timer', sortSpeed);
     },
   },
 };
