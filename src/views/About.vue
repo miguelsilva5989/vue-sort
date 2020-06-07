@@ -61,7 +61,7 @@ export default {
       {
         title: "Bubble Sort",
         src:
-          "https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Bubblesort-edited-color.svg/220px-Bubblesort-edited-color.svg.png",
+          "https://upload.wikimedia.org/wikipedia/commons/c/c8/Bubble-sort-example-300px.gif",
         url: "https://en.wikipedia.org/wiki/Bubble_sort",
         flex: 3
       },
