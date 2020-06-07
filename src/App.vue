@@ -35,17 +35,17 @@
             </v-list-item-icon>
             <v-list-item-content>Quick Sort</v-list-item-content>
           </v-list-item>
-          <v-list-item @click="handleClick(2)">
+          <v-list-item disabled @click="handleClick(2)">
             <v-list-item-icon>
               <v-icon>mdi-file-tree</v-icon>
             </v-list-item-icon>
-            <v-list-item-content>Heap Sort</v-list-item-content>
+            <v-list-item-content>Heap Sort (TODO)</v-list-item-content>
           </v-list-item>
-          <v-list-item @click="handleClick(3)">
+          <v-list-item disabled @click="handleClick(3)">
             <v-list-item-icon>
               <v-icon>mdi-transit-connection-variant</v-icon>
             </v-list-item-icon>
-            <v-list-item-content>Merge Sort</v-list-item-content>
+            <v-list-item-content>Merge Sort (TODO)</v-list-item-content>
           </v-list-item>
         </v-list-item-group>
       </v-list>
