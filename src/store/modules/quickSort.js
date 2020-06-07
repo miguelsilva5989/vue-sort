@@ -12,7 +12,7 @@ export default {
         return res;
       });
 
-      dispatch('quickSortHelper', {
+      await dispatch('quickSortHelper', {
         inputArr: inputArr,
         left: 0,
         right: inputArr.length - 1,
@@ -26,14 +26,15 @@ export default {
       commit('arrayManagement/setIsSorting', false, { root: true });
       commit('arrayManagement/setIsPaused', true, { root: true });
     },
-    quickSortHelper({ dispatch }, payload) {
+    async quickSortHelper({ dispatch }, payload) {
       var index;
       if (payload.inputArr.length > 1) {
-        index = dispatch('partition', {
+        index = await dispatch('partition', {
           inputArr: payload.inputArr,
           left: payload.left,
           right: payload.right,
         }); //index returned from partition
+
         if (payload.left < index - 1) {
           //more elements on the left side of the pivot
           dispatch('quickSortHelper', {
@@ -51,20 +52,28 @@ export default {
           });
         }
       }
+
+      return payload.inputArr;
     },
-    partition({ dispatch }, { array, left, right }) {
-      var pivot = array[Math.floor((right + left) / 2)], // middle element
-        i = left, // left pointer
-        j = right; // right pointer
+    partition({ dispatch }, payload) {
+      var pivot =
+          payload.inputArr[Math.floor((payload.right + payload.left) / 2)], // middle element
+        i = payload.left, // left pointer
+        j = payload.right; // right pointer
+
       while (i <= j) {
-        while (array[i] < pivot) {
+        while (payload.inputArr[i] < pivot) {
           i++;
         }
-        while (array[j] > pivot) {
+        while (payload.inputArr[j] > pivot) {
           j--;
         }
         if (i <= j) {
-          dispatch('swap', { array, i, j });
+          dispatch('swap', {
+            inputArr: payload.inputArr,
+            leftIndex: i,
+            rightIndex: j,
+          });
           i++;
           j--;
         }

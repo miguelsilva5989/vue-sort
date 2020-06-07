@@ -22,6 +22,8 @@ export default {
   actions: {
     setAlgorithm({ commit }, algo) {
       commit('setAlgorithm', algo);
+      // if (rootState.arrayManagement.forceStop) {
+      // }
     },
   },
 };

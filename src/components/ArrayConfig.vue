@@ -114,6 +114,9 @@ export default {
     async handleSortingFunction() {
       var fnMap = {
         "Bubble Sort": "bubbleSort",
+        "Quick Sort": "quickSort",
+        "Heap Sort": "heapSort",
+        "Merge Sort": "mergeSort",
       }
       this.$store.dispatch(fnMap[this.$store.getters.getSelectedAlgorithm])
     },
