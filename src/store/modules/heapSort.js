@@ -5,13 +5,17 @@ Vue.use(Vuex);
 
 export default {
   actions: {
-    async createHeap({ dispatch, rootState }, { inputArr, length, index }) {
+    async createHeap(
+      { commit, dispatch, rootState },
+      { inputArr, length, index }
+    ) {
       //if Stop button pressed
       if (rootState.arrayManagement.forceStop) {
         return;
       }
       // speed can be changed during sorting
       let sortSpeed = rootState.arrayManagement.selectedSortSpeed;
+      commit('arrayManagement/incrementSteps', null, { root: true });
 
       // change previous cyan to blue
       dispatch('arrayManagement/changeColor', {
@@ -31,6 +35,12 @@ export default {
         max = right;
       }
 
+      dispatch('arrayManagement/changeColor', {
+        index: max,
+        color: 'cyan',
+      });
+      await dispatch('arrayManagement/timer', sortSpeed);
+
       if (max != index) {
         dispatch('arrayManagement/changeColor', {
           index: index,
@@ -42,6 +52,7 @@ export default {
         });
         await dispatch('arrayManagement/timer', sortSpeed);
 
+        commit('arrayManagement/incrementSwaps', null, { root: true });
         var temp = inputArr[index];
         inputArr[index] = inputArr[max];
         rootState.arrayManagement.arrayToSort[index].y = inputArr[max];
@@ -65,6 +76,12 @@ export default {
           index: max,
         });
       }
+      // change previous cyan to blue
+      dispatch('arrayManagement/changeColor', {
+        index: max,
+        color: 'blue',
+      });
+      await dispatch('arrayManagement/timer', sortSpeed);
     },
     async heapSort({ commit, dispatch, rootState }) {
       let inputArr = await dispatch('arrayManagement/initSort', null, {
@@ -83,6 +100,7 @@ export default {
         }
         // speed can be changed during sorting
         let sortSpeed = rootState.arrayManagement.selectedSortSpeed;
+        commit('arrayManagement/incrementSteps', null, { root: true });
 
         dispatch('arrayManagement/changeColor', {
           index: i,
@@ -105,6 +123,7 @@ export default {
         }
         // speed can be changed during sorting
         let sortSpeed = rootState.arrayManagement.selectedSortSpeed;
+        commit('arrayManagement/incrementSteps', null, { root: true });
 
         dispatch('arrayManagement/changeColor', {
           index: 0,
@@ -116,6 +135,7 @@ export default {
         });
         await dispatch('arrayManagement/timer', sortSpeed);
 
+        commit('arrayManagement/incrementSwaps', null, { root: true });
         var temp = inputArr[0];
         inputArr[0] = inputArr[j];
         rootState.arrayManagement.arrayToSort[0].y = inputArr[j];
