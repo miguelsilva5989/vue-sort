@@ -35,11 +35,11 @@
             </v-list-item-icon>
             <v-list-item-content>Quick Sort</v-list-item-content>
           </v-list-item>
-          <v-list-item disabled @click="handleClick(2)">
+          <v-list-item @click="handleClick(2)">
             <v-list-item-icon>
               <v-icon>mdi-file-tree</v-icon>
             </v-list-item-icon>
-            <v-list-item-content>Heap Sort (TODO)</v-list-item-content>
+            <v-list-item-content>Heap Sort</v-list-item-content>
           </v-list-item>
           <v-list-item disabled @click="handleClick(3)">
             <v-list-item-icon>
@@ -66,22 +66,19 @@ export default {
   components: {},
 
   computed: {
-    ...mapGetters(["getSelectedAlgorithm"]),
+    ...mapGetters(["getSelectedAlgorithm"])
   },
 
-  methods: { 
+  methods: {
     ...mapActions(["setAlgorithm"]),
     handleClick(algo) {
-      this.setAlgorithm(algo)
-    },
+      this.setAlgorithm(algo);
+    }
   },
 
-  data: () => ({
-    
-  }),
+  data: () => ({})
 };
 </script>
 
 <style>
-
 </style>

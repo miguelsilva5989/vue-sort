@@ -27,10 +27,11 @@
     <p
       class="body-1 font-weight-regular mt-5"
     >For the UI I am using Vuetify which is a Vue UI Library with Material components.</p>
+    <p class="body-1 font-weight-regular mt-5">For state management I am using Vuex.</p>
 
     <p class="body-1 font-weight-regular mt-5">The column chart is drawn using Konva JS for Vue.</p>
 
-    <v-card max-width="200" >
+    <v-card max-width="200">
       <v-container fluid>
         <v-card @click="openInNewTab('https://konvajs.org/docs/vue/index.html')">
           <v-img
@@ -44,7 +45,6 @@
         </v-card>
       </v-container>
     </v-card>
-
   </div>
 </template>
 
