@@ -10,6 +10,15 @@ export default {
       if (rootState.arrayManagement.forceStop) {
         return;
       }
+      // speed can be changed during sorting
+      let sortSpeed = rootState.arrayManagement.selectedSortSpeed;
+
+      // change previous cyan to blue
+      dispatch('arrayManagement/changeColor', {
+        index: index,
+        color: 'blue',
+      });
+      await dispatch('arrayManagement/timer', sortSpeed);
 
       let max = index;
       let left = index * 2 + 1;
@@ -23,8 +32,6 @@ export default {
       }
 
       if (max != index) {
-        // speed can be changed during sorting
-        let sortSpeed = rootState.arrayManagement.selectedSortSpeed;
         dispatch('arrayManagement/changeColor', {
           index: index,
           color: 'red',
@@ -70,6 +77,19 @@ export default {
       let j = arrayLength - 1;
 
       while (i >= 0) {
+        //if Stop button pressed
+        if (rootState.arrayManagement.forceStop) {
+          break;
+        }
+        // speed can be changed during sorting
+        let sortSpeed = rootState.arrayManagement.selectedSortSpeed;
+
+        dispatch('arrayManagement/changeColor', {
+          index: i,
+          color: 'cyan',
+        });
+        await dispatch('arrayManagement/timer', sortSpeed);
+
         await dispatch('createHeap', {
           inputArr: inputArr,
           length: arrayLength,
@@ -81,7 +101,7 @@ export default {
       while (j >= 0) {
         //if Stop button pressed
         if (rootState.arrayManagement.forceStop) {
-          return;
+          break;
         }
         // speed can be changed during sorting
         let sortSpeed = rootState.arrayManagement.selectedSortSpeed;
@@ -112,6 +132,14 @@ export default {
           index: j,
           color: 'blue',
         });
+        await dispatch('arrayManagement/timer', sortSpeed);
+
+        // sorted
+        dispatch('arrayManagement/changeColor', {
+          index: j,
+          color: 'purple',
+        });
+        await dispatch('arrayManagement/timer', sortSpeed);
 
         await dispatch('createHeap', {
           inputArr: inputArr,
