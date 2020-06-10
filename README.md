@@ -9,6 +9,8 @@ This mini project allows the visualization of sorting algorithms. The main objec
 
 For the UI I am using Vuetify which is a [Vue UI](https://vuetifyjs.com/en/getting-started/quick-start/) Library with Material components.
 
+For state management I am using [Vuex](https://vuex.vuejs.org/).
+
 The column chart is drawn using [Konva JS](https://konvajs.org/docs/vue/index.html) for Vue.
 
 ## Project setup
