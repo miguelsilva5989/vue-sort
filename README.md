@@ -5,7 +5,6 @@ This mini project allows the visualization of sorting algorithms. The main objec
 * [Bubble Sort](https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Bubblesort-edited-color.svg/220px-Bubblesort-edited-color.svg.png)
 * [Quick Sort](https://en.wikipedia.org/wiki/Quicksort)
 * [Heap Sort](https://en.wikipedia.org/wiki/Heapsort)
-* [Merge Sort](https://en.wikipedia.org/wiki/Merge_sort)
 
 For the UI I am using Vuetify which is a [Vue UI](https://vuetifyjs.com/en/getting-started/quick-start/) Library with Material components.
 

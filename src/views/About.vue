@@ -78,13 +78,6 @@ export default {
           "https://upload.wikimedia.org/wikipedia/commons/1/1b/Sorting_heapsort_anim.gif",
         url: "https://en.wikipedia.org/wiki/Heapsort",
         flex: 3
-      },
-      {
-        title: "Merge Sort",
-        src:
-          "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Merge-sort-example-300px.gif/220px-Merge-sort-example-300px.gif",
-        url: "https://en.wikipedia.org/wiki/Merge_sort",
-        flex: 3
       }
     ]
   })
