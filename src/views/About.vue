@@ -63,21 +63,21 @@ export default {
         src:
           "https://upload.wikimedia.org/wikipedia/commons/c/c8/Bubble-sort-example-300px.gif",
         url: "https://en.wikipedia.org/wiki/Bubble_sort",
-        flex: 3
+        flex: 4
       },
       {
         title: "Quick Sort",
         src:
           "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Sorting_quicksort_anim.gif/220px-Sorting_quicksort_anim.gif",
         url: "https://en.wikipedia.org/wiki/Quicksort",
-        flex: 3
+        flex: 4
       },
       {
         title: "Heap Sort",
         src:
           "https://upload.wikimedia.org/wikipedia/commons/1/1b/Sorting_heapsort_anim.gif",
         url: "https://en.wikipedia.org/wiki/Heapsort",
-        flex: 3
+        flex: 4
       }
     ]
   })
