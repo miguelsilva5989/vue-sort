@@ -12,6 +12,10 @@ For state management I am using [Vuex](https://vuex.vuejs.org/).
 
 The column chart is drawn using [Konva JS](https://konvajs.org/docs/vue/index.html) for Vue.
 
+## Website
+
+The website is deployed on Github pages -> [clich me :)](https://miguelsilva5989.github.io/vuesort.github.io/#/)
+
 ## Project setup
 
 ```bash
