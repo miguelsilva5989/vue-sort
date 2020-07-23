@@ -14,7 +14,7 @@ The column chart is drawn using [Konva JS](https://konvajs.org/docs/vue/index.ht
 
 ## Website
 
-The website is deployed on Github pages -> [clich me :)](https://miguelsilva5989.github.io/vuesort.github.io/#/)
+The website is deployed on Github pages -> [click me :)](https://miguelsilva5989.github.io/vuesort.github.io/#/)
 
 ## Project setup
 
